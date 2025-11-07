@@ -1,14 +1,13 @@
-// Schedule Poster Loader
-// Simple script to show the schedule poster from Google Drive
-
+﻿// Schedule Poster Loader
 document.addEventListener('DOMContentLoaded', function() {
     showSchedulePoster();
 });
 
 async function showSchedulePoster() {
+    console.log('Loading schedule poster...');
     try {
-        // Get poster config from JSON file
         const config = await getPosterConfig();
+        console.log('Config loaded:', config);
         
         if (config.poster && config.poster.imageId) {
             createPosterDisplay(config.poster);
@@ -16,67 +15,40 @@ async function showSchedulePoster() {
             showErrorMessage("Configuração do poster não encontrada");
         }
     } catch (error) {
-        console.log('Erro ao carregar configuração:', error);
+        console.log('Error:', error);
         showErrorMessage("Programação em breve");
     }
 }
 
 async function getPosterConfig() {
-    const response = await fetch('schedule-config.json');
+    const response = await fetch('config/schedule-config.json');
     return await response.json();
 }
 
 function createPosterDisplay(posterData) {
     const container = document.getElementById('poster-container');
     const imageId = posterData.imageId;
-    const title = posterData.title || "Programação";
-    const date = posterData.date || "";
     
-    // Create image element
     const img = document.createElement('img');
     img.className = 'poster-image';
-    img.alt = title;
-    img.src = `https://drive.google.com/uc?export=view&id=${imageId}`;
+    img.alt = 'Programação';
+    img.src = `https://drive.google.com/thumbnail?id=${imageId}&sz=w800`;
     
-    // Create text overlay
-    const textOverlay = document.createElement('div');
-    textOverlay.className = 'poster-info';
-    textOverlay.innerHTML = `
-        <h1>${title}</h1>
-        ${date ? `<p class="poster-date">${date}</p>` : ''}
-    `;
-    
-    // Create wrapper
-    const wrapper = document.createElement('div');
-    wrapper.className = 'poster-display';
-    wrapper.appendChild(img);
-    wrapper.appendChild(textOverlay);
-    
-    // Handle image loading errors
-    img.onerror = function() {
-        showErrorMessage("Poster não encontrado - ID: " + imageId);
-    };
-    
-    // Show poster when loaded
     img.onload = function() {
-        wrapper.style.opacity = '1';
+        console.log('Image loaded successfully');
+        container.style.opacity = '1';
     };
     
-    // Add to page
+    img.onerror = function() {
+        showErrorMessage("Poster não encontrado");
+    };
+    
     container.innerHTML = '';
-    container.appendChild(wrapper);
+    container.appendChild(img);
 }
 
 function showErrorMessage(message) {
     const container = document.getElementById('poster-container');
-    
-    container.innerHTML = `
-        <div class="poster-fallback">
-            <h1>Programação</h1>
-            <p>${message}</p>
-            <small>Configure o poster em schedule-config.json</small>
-        </div>
-    `;
-    
+    container.innerHTML = `<div class="poster-fallback"><h1>Programação</h1><p>${message}</p></div>`;
     container.style.opacity = '1';
 }

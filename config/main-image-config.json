@@ -2,21 +2,21 @@
   "_comment": "Configuração da Imagem Principal - Segundas na Z",
   "_instructions": [
     "Para atualizar a imagem principal:",
-    "1. Faça upload da imagem para o Google Drive",
+    "1. Upload da imagem para o Google Drive",
     "2. Clique com o botão direito na imagem → Obter link",
     "3. Extraia o ID do link: drive.google.com/file/d/[ID]/view", 
     "4. Cole o ID no campo 'imageId' abaixo",
-    "5. Atualize o 'title' se necessário"
+    "5. Atualize o 'title' e 'description' se necessário"
   ],
   
   "mainImage": {
-    "imageId": "1abc234def567890ghijk-main",
-    "title": "Segundas na Z",
-    "description": "Arquivo e divulgação de eventos culturais"
+    "imageId": "1omhaMIjaARek5s4oNyKwzD9zkeLs77L6",
+    "title": "segundas na z",
+    "description": ""
   },
   
   "fallbackMessage": {
-    "title": "Segundas na Z",
-    "text": "Imagem principal será carregada em breve."
+    "title": "segundas na z",
+    "text": "Imagem será carregada em breve."
   }
 }

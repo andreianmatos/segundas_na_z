@@ -22,49 +22,18 @@ async function showMainImage() {
 }
 
 async function getImageConfig() {
-    const response = await fetch('main-image-config.json');
+    const response = await fetch('config/main-image-config.json');
     return await response.json();
 }
 
 function createImageDisplay(imageData) {
     const container = document.getElementById('main-image-container');
-    const imageId = imageData.imageId;
-    const title = imageData.title || "Segundas na Z";
-    const description = imageData.description || "";
     
-    // Create image element
-    const img = document.createElement('img');
-    img.className = 'main-image';
-    img.alt = title;
-    img.src = `https://drive.google.com/uc?export=view&id=${imageId}`;
-    
-    // Create text overlay
-    const textOverlay = document.createElement('div');
-    textOverlay.className = 'main-image-info';
-    textOverlay.innerHTML = `
-        <h1>${title}</h1>
-        ${description ? `<p class="main-description">${description}</p>` : ''}
-    `;
-    
-    // Create wrapper
-    const wrapper = document.createElement('div');
-    wrapper.className = 'main-image-display';
-    wrapper.appendChild(img);
-    wrapper.appendChild(textOverlay);
-    
-    // Handle image loading errors
-    img.onerror = function() {
-        showErrorMessage("Imagem não encontrada - ID: " + imageId);
-    };
-    
-    // Show image when loaded
-    img.onload = function() {
-        wrapper.style.opacity = '1';
-    };
-    
-    // Add to page
+    // Since background is now global, just clear the container and show it
     container.innerHTML = '';
-    container.appendChild(wrapper);
+    container.style.opacity = '1';
+    
+    console.log('Index page content ready - background is global');
 }
 
 function showErrorMessage(message) {

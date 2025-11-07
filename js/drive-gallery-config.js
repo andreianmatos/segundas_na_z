@@ -6,7 +6,7 @@
 // Load configuration from JSON file
 async function loadGalleryConfig() {
     try {
-        const response = await fetch('./gallery-config.json');
+        const response = await fetch('./config/gallery-config.json');
         const config = await response.json();
         return config;
     } catch (error) {

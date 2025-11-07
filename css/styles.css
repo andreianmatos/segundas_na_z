@@ -10,7 +10,30 @@ body {
     line-height: 1.5;
     color: black;
     background-color: white;
+    background-image: url("https://lh3.googleusercontent.com/d/1omhaMIjaARek5s4oNyKwzD9zkeLs77L6=w1600");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     font-weight: normal;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+    z-index: 1;
 }
 
 img {
@@ -82,9 +105,12 @@ p {
 
 /* Header and Navigation - Simple */
 .header {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
     border-bottom: 2px solid black;
     position: static;
+    position: relative;
+    z-index: 10;
 }
 
 .nav {
@@ -156,7 +182,9 @@ p {
 
 /* Main Content */
 .main {
-    min-height: calc(100vh - 120px);
+    flex: 1;
+    position: relative;
+    z-index: 10;
 }
 
 /* Hero Section - Gallery Style */
@@ -1040,6 +1068,8 @@ p {
     color: white;
     padding: 0.8rem 0;
     margin-top: auto;
+    position: relative;
+    z-index: 10;
 }
 
 .footer-content {
@@ -1048,6 +1078,9 @@ p {
     align-items: center;
     flex-wrap: nowrap;
     gap: 1rem;
+    padding: 0 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .footer-content p {
@@ -1140,7 +1173,28 @@ p {
 
     .features-grid {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2rem;
+    }
+
+    /* Footer mobile styles */
+    .footer-content {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 0 1rem;
+        text-align: center;
+    }
+    
+    .footer-content p {
+        font-size: 0.75rem;
+        margin: 0;
+    }
+    
+    .footer-links {
+        gap: 1rem;
+    }
+    
+    .footer-links a {
+        font-size: 0.75rem;
     }
 
     .content-grid {
@@ -1911,7 +1965,7 @@ p {
 
 /* Main Content */
 .main {
-    min-height: calc(100vh - 80px);
+    flex: 1;
 }
 
 /* Hero Section */
@@ -3281,6 +3335,7 @@ body:has(.clean-image-grid) .main {
     text-align: center;
     max-width: 1000px;
     margin: 0 auto;
+    padding: 0 1rem;
     opacity: 0;
     transition: opacity 0.5s ease;
 }
@@ -3297,6 +3352,7 @@ body:has(.clean-image-grid) .main {
     max-width: 100%;
     height: auto;
     display: block;
+    margin: 0 auto;
     border: 2px solid black;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
@@ -3385,8 +3441,13 @@ body:has(.clean-image-grid) .main {
         padding: 2rem 0;
     }
     
+    .poster-container {
+        padding: 0 1.5rem;
+    }
+    
     .poster-image {
-        max-width: 90%;
+        max-width: 95%;
+        border-width: 1px;
     }
     
     .poster-info h1 {
@@ -3418,18 +3479,24 @@ body:has(.clean-image-grid) .main {
 /* Main Image Styles (for index page) */
 .main-image-section {
     padding: 3rem 0;
-    min-height: 80vh;
+    margin: 0;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .main-image-container {
-    text-align: center;
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    margin: 0;
+    padding: 0;
     opacity: 0;
     transition: opacity 0.5s ease;
+    background-color: transparent;
+    position: relative;
 }
 
 .main-image-display {
@@ -3441,15 +3508,20 @@ body:has(.clean-image-grid) .main {
 }
 
 .main-image {
-    max-width: 100%;
-    height: auto;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     display: block;
-    border: 2px solid black;
+    border: none;
 }
 
 .main-image-info {
     margin-top: 2rem;
     text-align: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .main-image-info h1 {
@@ -3459,10 +3531,19 @@ body:has(.clean-image-grid) .main {
 }
 
 .main-description {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     color: black;
-    margin: 0;
+    margin: 1rem auto;
     font-style: italic;
+    line-height: 1.8;
+    text-align: center;
+    max-width: 500px;
+}
+
+.main-description small {
+    font-size: 0.9rem;
+    font-style: normal;
+    opacity: 0.8;
 }
 
 .main-image-placeholder {
@@ -3533,20 +3614,55 @@ body:has(.clean-image-grid) .main {
     }
     
     .main-image {
-        max-width: 90%;
+        max-width: 95%;
+    }
+    
+    .main-image-info {
+        margin-top: 1.5rem;
+        padding: 0 1rem;
+        max-width: 100%;
     }
     
     .main-image-info h1 {
         font-size: 2rem;
+        margin-bottom: 1rem;
     }
     
     .main-description {
-        font-size: 1.2rem;
+        font-size: 1rem;
+        line-height: 1.6;
+        max-width: 100%;
+        margin: 1rem auto;
+        padding: 0 1rem;
+    }
+    
+    .main-description small {
+        font-size: 0.85rem;
     }
     
     .main-image-placeholder {
         padding: 3rem 1.5rem;
         min-height: 400px;
+    }
+}
+
+/* Extra small screens (phones) */
+@media (max-width: 480px) {
+    .main-image-info h1 {
+        font-size: 1.8rem;
+    }
+    
+    .main-description {
+        font-size: 0.95rem;
+        padding: 0 0.5rem;
+    }
+    
+    .poster-container {
+        padding: 0 1rem;
+    }
+    
+    .poster-image {
+        max-width: 98%;
     }
     
     .main-image-placeholder .placeholder-content h1 {
@@ -3590,7 +3706,7 @@ body:has(.clean-image-grid) .main {
 }
 
 .about-content h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     margin-bottom: 3rem;
     color: black;
     font-weight: bold;
@@ -3643,8 +3759,8 @@ body:has(.clean-image-grid) .main {
 }
 
 .team-simple {
-    margin-top: 3rem;
-    padding-top: 2rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
     border-top: 1px solid black;
 }
 

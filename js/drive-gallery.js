@@ -42,8 +42,8 @@ function createImageCard(imageData, index) {
     img.alt = imageData.eventName || `Photo ${index + 1}`;
     img.loading = 'lazy';
     
-    // Use the standard Google Drive image URL
-    img.src = `https://drive.google.com/uc?export=view&id=${imageData.id}`;
+    // Use thumbnail URL format directly (more reliable)
+    img.src = `https://drive.google.com/thumbnail?id=${imageData.id}&sz=w400`;
     
     // Create overlay for hover
     const overlay = document.createElement('div');
@@ -63,38 +63,26 @@ function createImageCard(imageData, index) {
         card.style.opacity = '1';
     };
     
-    // Handle load error with fallback
+    // Handle load error - show placeholder
     img.onerror = function() {
-        // Try alternative URL format
-        const fallbackUrl = `https://drive.google.com/thumbnail?id=${imageData.id}&sz=w400`;
-        const fallbackImg = new Image();
-        
-        fallbackImg.onload = function() {
-            img.src = fallbackUrl;
-        };
-        
-        fallbackImg.onerror = function() {
-            // Show placeholder
-            card.innerHTML = `
-                <div style="
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    height: 280px;
-                    background: white;
-                    border: 2px solid black;
-                    text-align: center;
-                ">
-                    <p style="font-size: 2rem;">📷</p>
-                    <p>${imageData.eventName || 'Photo'}</p>
-                    <small>${imageData.date || ''}</small>
-                </div>
-            `;
-            card.style.opacity = '1';
-        };
-        
-        fallbackImg.src = fallbackUrl;
+        // Show placeholder if image fails to load
+        card.innerHTML = `
+            <div style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 280px;
+                background: white;
+                border: 2px solid black;
+                text-align: center;
+            ">
+                <p style="font-size: 2rem;">📷</p>
+                <p>${imageData.eventName || 'Photo'}</p>
+                <small>${imageData.date || ''}</small>
+            </div>
+        `;
+        card.style.opacity = '1';
     };
     
     card.appendChild(img);
