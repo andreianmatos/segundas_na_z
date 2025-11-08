@@ -2823,7 +2823,7 @@ p {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 2rem;
-    /* Remove min-height entirely - let content determine height */
+    /* No min-height needed - flexbox handles layout */
     position: relative;
 }
 
@@ -3168,7 +3168,7 @@ body:has(.clean-image-grid) .main {
 }
 
 body:has(.clean-image-grid) .footer {
-    flex-shrink: 0; /* Footer never shrinks */
+    flex-shrink: 0; /* Footer never shrinks and stays always visible */
 }
 
 /* Hide webkit scrollbars for archive page */
