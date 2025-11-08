@@ -32,7 +32,8 @@ async function loadGalleryConfig() {
     
     // Convert to the format expected by the gallery
     window.DriveGalleryConfig = {
-        images: config.images || [],
+        items: config.items || config.images || [], // Support new 'items' and legacy 'images'
+        images: config.images || [], // Keep for legacy support
         imageIds: config.imageIds || [], // Legacy support
         settings: config.settings
     };

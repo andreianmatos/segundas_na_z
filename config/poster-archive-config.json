@@ -1,0 +1,134 @@
+{
+  "_comment": "Arquivo de Cartazes Mensais - Segundas na Z",
+  "_instructions": [
+    "Cada mês tem 5 cartazes: 1 principal (mensal) + 4 semanais",
+    "Para adicionar novo mês:",
+    "1. Crie objeto no topo do array 'months' (mais recente primeiro)",
+    "2. mainPoster: cartaz principal do mês",
+    "3. weeklyPosters: array com 4 cartazes semanais",
+    "4. Faça upload para Google Drive e use os IDs",
+    "5. Format: drive.google.com/file/d/[ID]/view"
+  ],
+  
+  "months": [
+    {
+      "id": "2024-11",
+      "year": 2024,
+      "month": 11,
+      "monthName": "Novembro",
+      "mainPoster": {
+        "imageId": "1Gu6q5p-QM7erh9k1fYQobwuDfY_2U0jw",
+        "title": "Novembro 2024",
+        "description": "Programação mensal completa"
+      },
+      "weeklyPosters": [
+        {
+          "imageId": "1DxR5jXu_2fXPtI0PxlJOOFLPknMLLz83",
+          "title": "Semana 1",
+          "description": "1-7 Novembro",
+          "week": 1
+        },
+        {
+          "imageId": "1DxR5jXu_2fXPtI0PxlJOOFLPknMLLz83",
+          "title": "Semana 2", 
+          "description": "8-14 Novembro",
+          "week": 2
+        },
+        {
+          "imageId": "1DxR5jXu_2fXPtI0PxlJOOFLPknMLLz83",
+          "title": "Semana 3",
+          "description": "15-21 Novembro", 
+          "week": 3
+        },
+        {
+          "imageId": "1DxR5jXu_2fXPtI0PxlJOOFLPknMLLz83",
+          "title": "Semana 4",
+          "description": "22-28 Novembro",
+          "week": 4
+        }
+      ]
+    },
+    {
+      "id": "2024-10",
+      "year": 2024,
+      "month": 10,
+      "monthName": "Outubro",
+      "mainPoster": {
+        "imageId": "1Gu6q5p-QM7erh9k1fYQobwuDfY_2U0jw",
+        "title": "Outubro 2024",
+        "description": "Programação mensal completa"
+      },
+      "weeklyPosters": [
+        {
+          "imageId": "1Gu6q5p-QM7erh9k1fYQobwuDfY_2U0jw",
+          "title": "Semana 1",
+          "description": "1-7 Outubro",
+          "week": 1
+        },
+        {
+          "imageId": "1Gu6q5p-QM7erh9k1fYQobwuDfY_2U0jw",
+          "title": "Semana 2",
+          "description": "8-14 Outubro",
+          "week": 2
+        },
+        {
+          "imageId": "1Gu6q5p-QM7erh9k1fYQobwuDfY_2U0jw",
+          "title": "Semana 3",
+          "description": "15-21 Outubro",
+          "week": 3
+        },
+        {
+          "imageId": "1Gu6q5p-QM7erh9k1fYQobwuDfY_2U0jw",
+          "title": "Semana 4",
+          "description": "22-28 Outubro",
+          "week": 4
+        }
+      ]
+    },
+    {
+      "id": "2024-09",
+      "year": 2024,
+      "month": 9,
+      "monthName": "Setembro",
+      "mainPoster": {
+        "imageId": "1Gu6q5p-QM7erh9k1fYQobwuDfY_2U0jw",
+        "title": "Setembro 2024",
+        "description": "Programação mensal completa"
+      },
+      "weeklyPosters": [
+        {
+          "imageId": "1Gu6q5p-QM7erh9k1fYQobwuDfY_2U0jw",
+          "title": "Semana 1",
+          "description": "2-8 Setembro",
+          "week": 1
+        },
+        {
+          "imageId": "1Gu6q5p-QM7erh9k1fYQobwuDfY_2U0jw",
+          "title": "Semana 2",
+          "description": "9-15 Setembro",
+          "week": 2
+        },
+        {
+          "imageId": "1Gu6q5p-QM7erh9k1fYQobwuDfY_2U0jw",
+          "title": "Semana 3",
+          "description": "16-22 Setembro",
+          "week": 3
+        },
+        {
+          "imageId": "1Gu6q5p-QM7erh9k1fYQobwuDfY_2U0jw",
+          "title": "Semana 4",
+          "description": "23-29 Setembro",
+          "week": 4
+        }
+      ]
+    }
+  ],
+  
+  "settings": {
+    "currentMonthIndex": 0,
+    "showPastMonths": true,
+    "maxPastMonths": 12,
+    "imageSize": "w800",
+    "thumbnailSize": "w400"
+  }
+}

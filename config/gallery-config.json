@@ -1,91 +1,84 @@
 {
   "_comment": "Segundas na Z Gallery Configuration",
   "_instructions": [
-    "To add new images:",
-    "1. Upload image to Google Drive",
-    "2. Right-click image → Get link",
+    "To add new content:",
+    "1. Upload image/video to Google Drive",
+    "2. Right-click → Get link", 
     "3. Extract ID from: drive.google.com/file/d/[ID]/view",
-    "4. Add image object to the TOP of images array (newest first)",
-    "5. Include id, eventName, and date for each image"
+    "4. Add object to the TOP of items array (newest first)",
+    "5. Set 'type' to 'image' or 'video'",
+    "6. Include id, eventName, and date for each item"
   ],
   
-  "images": [
+  "items": [
     {
-      "id": "178tqB7I6FnhWcwZr6WwLRqqiZDc8Ix8-",
-      "eventName": "Event 14",
+      "id": "1G55TRXa4u0EZcEHn3uzkX8DDX5RztpZ9",
+      "type": "video",
+      "eventName": "Event 14 - Performance Highlights",
       "date": "12 Nov 2024"
     },
     {
-      "id": "1Kx4EqqBaL_eoVX95h9kQ-3RMazDeW-dO",
+      "id": "11XNfrWFEUI03Ssl0MkUuFbN_3PIaRQ4F", 
+      "type": "image",
       "eventName": "Event 13",
       "date": "10 Nov 2024"
     },
     {
-      "id": "178tqB7I6FnhWcwZr6WwLRqqiZDc8Ix8-",
+      "id": "1isP3L2kGLzrDyPSw4LEwVYSEPL91m5uF",
+      "type": "image",
       "eventName": "Event 12",
       "date": "08 Nov 2024"
     },
     {
-      "id": "1Kx4EqqBaL_eoVX95h9kQ-3RMazDeW-dO",
+      "id": "1sxYwFlNWCMccxVnPt_G9BNWLTnEsc-ru",
+      "type": "image",
       "eventName": "Event 11",
       "date": "06 Nov 2024"
     },
     {
-      "id": "178tqB7I6FnhWcwZr6WwLRqqiZDc8Ix8-",
+      "id": "1eZEPLjAWacFR71_Q9yQ7Ng7yJ5mxoTJY",
+      "type": "image",
       "eventName": "Event 10",
       "date": "05 Nov 2024"
     },
     {
-      "id": "1Kx4EqqBaL_eoVX95h9kQ-3RMazDeW-dO",
+      "id": "1_88v8-_jbbDrGATDDVyiLAr1MPCMh2kD",
+      "type": "image",
       "eventName": "Event 9",
       "date": "03 Nov 2024"
     },
     {
-      "id": "178tqB7I6FnhWcwZr6WwLRqqiZDc8Ix8-",
+      "id": "1rb6x00J6zCNSsbrgmtKCHT1wCceS5BjV",
+      "type": "image",
       "eventName": "Event 8",
       "date": "01 Nov 2024"
     },
     {
-      "id": "1Kx4EqqBaL_eoVX95h9kQ-3RMazDeW-dO",
+      "id": "178EBlg6UEDsBot9_79tAxZgQWpUZ1bFg",
+      "type": "image",
       "eventName": "Event 7",
       "date": "29 Out 2024"
     },
     {
-      "id": "178tqB7I6FnhWcwZr6WwLRqqiZDc8Ix8-",
+      "id": "11ll-17cmho1DUwWt1fsCnswhYi9iJSCg",
+      "type": "image",
       "eventName": "Event 6",
       "date": "27 Out 2024"
     },
     {
-      "id": "1Kx4EqqBaL_eoVX95h9kQ-3RMazDeW-dO",
+      "id": "1xQ0xllCB8EXKMU9GUU_BDxGprgyXYn04",
+      "type": "image",
       "eventName": "Event 5",
       "date": "25 Out 2024"
-    },
-    {
-      "id": "178tqB7I6FnhWcwZr6WwLRqqiZDc8Ix8-",
-      "eventName": "Event 4",
-      "date": "22 Out 2024"
-    },
-    {
-      "id": "1Kx4EqqBaL_eoVX95h9kQ-3RMazDeW-dO",
-      "eventName": "Event 3",
-      "date": "20 Out 2024"
-    },
-    {
-      "id": "178tqB7I6FnhWcwZr6WwLRqqiZDc8Ix8-",
-      "eventName": "Event 2",
-      "date": "18 Out 2024"
-    },
-    {
-      "id": "1Kx4EqqBaL_eoVX95h9kQ-3RMazDeW-dO",
-      "eventName": "Event 1",
-      "date": "15 Out 2024"
     }
   ],
   
   "settings": {
-    "imagesPerRow": "auto",
-    "imageSpacing": "1rem",
+    "itemsPerRow": "auto",
+    "itemSpacing": "1rem",
     "hoverOverlay": true,
-    "lazyLoading": true
+    "lazyLoading": true,
+    "videoControls": true,
+    "videoAutoplay": false
   }
 }
