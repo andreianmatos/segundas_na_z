@@ -61,39 +61,154 @@ function createCurrentMonthSection(monthData) {
     const section = document.createElement('div');
     section.className = 'current-month-section';
     
-    // Month layout container
-    const layout = document.createElement('div');
-    layout.className = 'month-layout';
+    // For mobile: create simple slide carousel
+    if (window.innerWidth <= 768) {
+        const carousel = document.createElement('div');
+        carousel.className = 'mobile-carousel';
+        
+        // Get all posters
+        const allPosters = [];
+        if (monthData.mainPoster?.imageId) {
+            allPosters.push({ id: monthData.mainPoster.imageId, title: 'Main' });
+        }
+        if (monthData.weeklyPosters) {
+            monthData.weeklyPosters.forEach((weekly, i) => {
+                if (weekly?.imageId) {
+                    allPosters.push({ id: weekly.imageId, title: `Week ${i+1}` });
+                }
+            });
+        }
+        
+        let currentSlide = 0;
+        
+        // Create slides
+        allPosters.forEach((poster, index) => {
+            const slide = document.createElement('div');
+            slide.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
+            
+            const img = document.createElement('img');
+            img.src = `https://drive.google.com/thumbnail?id=${poster.id}&sz=w800`;
+            img.alt = poster.title;
+            
+            slide.appendChild(img);
+            carousel.appendChild(slide);
+        });
+        
+        // Create controls
+        const controls = document.createElement('div');
+        controls.className = 'carousel-controls';
+        
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'nav-btn';
+        prevBtn.innerHTML = '←';
+        prevBtn.disabled = true;
+        
+        
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'nav-btn';
+        nextBtn.innerHTML = '→';
+        nextBtn.disabled = allPosters.length <= 1;
+        
+        function updateSlide() {
+            carousel.querySelectorAll('.carousel-slide').forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentSlide);
+            });
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === allPosters.length - 1;
+        }
+        
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < allPosters.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        });
+        
+        // Touch support
+        let startX = 0;
+        carousel.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+        carousel.addEventListener('touchend', e => {
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0 && currentSlide < allPosters.length - 1) {
+                    currentSlide++;
+                    updateSlide();
+                } else if (diff < 0 && currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            }
+        });
+        
+        controls.appendChild(prevBtn);
+        controls.appendChild(nextBtn);
+        
+        section.appendChild(carousel);
+        section.appendChild(controls);
+        return section;
+    }
     
-    // Left weekly posters (weeks 1 & 2)
-    const leftColumn = document.createElement('div');
-    leftColumn.className = 'weekly-posters-left';
+    // For desktop: original layout
+    const mainPoster = createMainPoster(monthData.mainPoster);
+    const weeklyPosters = document.createElement('div');
+    weeklyPosters.className = 'weekly-posters';
     
-    // Right weekly posters (weeks 3 & 4)
-    const rightColumn = document.createElement('div');
-    rightColumn.className = 'weekly-posters-right';
-    
-    // Add weekly posters to appropriate columns
     monthData.weeklyPosters.forEach((weekly, index) => {
         const weeklyPoster = createWeeklyPoster(weekly, index + 1);
-        if (index < 2) {
-            leftColumn.appendChild(weeklyPoster);
-        } else {
-            rightColumn.appendChild(weeklyPoster);
-        }
+        weeklyPosters.appendChild(weeklyPoster);
     });
     
-    // Main poster
-    const mainPoster = createMainPoster(monthData.mainPoster);
-    
-    // Assemble layout: left column, main poster, right column
-    layout.appendChild(leftColumn);
-    layout.appendChild(mainPoster);
-    layout.appendChild(rightColumn);
-    
-    section.appendChild(layout);
+    section.appendChild(mainPoster);
+    section.appendChild(weeklyPosters);
     
     return section;
+}
+
+function createWeeklyPoster(posterData, weekNumber) {
+    const container = document.createElement('div');
+    container.className = 'weekly-poster';
+    
+    const img = document.createElement('img');
+    img.src = `https://drive.google.com/thumbnail?id=${posterData.imageId}&sz=w300`;
+    img.alt = `Semana ${weekNumber}`;
+    img.loading = 'lazy';
+    
+    // Handle image load error
+    img.onerror = () => {
+        container.innerHTML = `
+            <div style="
+                width: 150px;
+                height: 200px;
+                border: 2px dashed #999;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f5f5f5;
+                margin: 0 auto;
+                color: #999;
+            ">
+                <div style="text-align: center;">
+                    <p style="font-size: 1.5rem; margin: 0;">📅</p>
+                </div>
+            </div>
+        `;
+    };
+    
+    // Add click handler
+    img.addEventListener('click', () => openPosterModal(posterData));
+    
+    container.appendChild(img);
+    
+    return container;
 }
 
 function createMainPoster(posterData) {
@@ -101,7 +216,7 @@ function createMainPoster(posterData) {
     container.className = 'main-poster';
     
     const img = document.createElement('img');
-    img.src = `https://drive.google.com/thumbnail?id=${posterData.imageId}&sz=w600`;
+    img.src = `https://drive.google.com/thumbnail?id=${posterData.imageId}&sz=w800`;
     img.alt = posterData.title;
     img.loading = 'lazy';
     
@@ -110,19 +225,19 @@ function createMainPoster(posterData) {
         container.innerHTML = `
             <div style="
                 width: 300px;
-                height: calc(90vh - 120px);
-                max-height: 700px;
-                border: 2px dashed black;
+                height: 400px;
+                border: 2px dashed #ccc;
                 border-radius: 8px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: white;
+                background: #f9f9f9;
                 margin: 0 auto;
                 cursor: pointer;
             ">
-                <div style="text-align: center;">
+                <div style="text-align: center; color: #999;">
                     <p style="font-size: 3rem; margin: 0;">📅</p>
+                    <p style="font-size: 1rem; margin: 0.5rem 0 0;">Cartaz Principal</p>
                 </div>
             </div>
         `;
@@ -194,84 +309,117 @@ function createPastMonthItem(monthData) {
     const item = document.createElement('div');
     item.className = 'past-month-item';
     
-    // Use same layout as current month
-    const grid = document.createElement('div');
-    grid.className = 'past-month-grid';
-    
-    // Left weekly posters (weeks 1 & 2)
-    const leftColumn = document.createElement('div');
-    leftColumn.className = 'past-poster-left';
-    
-    // Right weekly posters (weeks 3 & 4)
-    const rightColumn = document.createElement('div');
-    rightColumn.className = 'past-poster-right';
-    
-    // Add weekly posters to appropriate columns
-    monthData.weeklyPosters.forEach((weekly, index) => {
-        const weeklyPoster = createPastPoster(weekly, false);
-        if (index < 2) {
-            leftColumn.appendChild(weeklyPoster);
-        } else {
-            rightColumn.appendChild(weeklyPoster);
+    // For mobile: create same simple slide carousel
+    if (window.innerWidth <= 768) {
+        const carousel = document.createElement('div');
+        carousel.className = 'mobile-carousel';
+        
+        // Get all posters
+        const allPosters = [];
+        if (monthData.mainPoster?.imageId) {
+            allPosters.push({ id: monthData.mainPoster.imageId, title: 'Main' });
         }
+        if (monthData.weeklyPosters) {
+            monthData.weeklyPosters.forEach((weekly, i) => {
+                if (weekly?.imageId) {
+                    allPosters.push({ id: weekly.imageId, title: `Week ${i+1}` });
+                }
+            });
+        }
+        
+        let currentSlide = 0;
+        
+        // Create slides
+        allPosters.forEach((poster, index) => {
+            const slide = document.createElement('div');
+            slide.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
+            
+            const img = document.createElement('img');
+            img.src = `https://drive.google.com/thumbnail?id=${poster.id}&sz=w800`;
+            img.alt = poster.title;
+            
+            slide.appendChild(img);
+            carousel.appendChild(slide);
+        });
+        
+        // Create controls
+        const controls = document.createElement('div');
+        controls.className = 'carousel-controls';
+        
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'nav-btn';
+        prevBtn.innerHTML = '←';
+        prevBtn.disabled = true;
+        
+        
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'nav-btn';
+        nextBtn.innerHTML = '→';
+        nextBtn.disabled = allPosters.length <= 1;
+        
+        function updateSlide() {
+            carousel.querySelectorAll('.carousel-slide').forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentSlide);
+            });
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === allPosters.length - 1;
+        }
+        
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < allPosters.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        });
+        
+        // Touch support
+        let startX = 0;
+        carousel.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+        carousel.addEventListener('touchend', e => {
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0 && currentSlide < allPosters.length - 1) {
+                    currentSlide++;
+                    updateSlide();
+                } else if (diff < 0 && currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            }
+        });
+        
+        controls.appendChild(prevBtn);
+        controls.appendChild(nextBtn);
+        
+        item.appendChild(carousel);
+        item.appendChild(controls);
+        return item;
+    }
+    
+    // For desktop: original layout
+    const mainPoster = createMainPoster(monthData.mainPoster);
+    const weeklyPosters = document.createElement('div');
+    weeklyPosters.className = 'weekly-posters';
+    
+    monthData.weeklyPosters.forEach((weekly, index) => {
+        const weeklyPoster = createWeeklyPoster(weekly, index + 1);
+        weeklyPosters.appendChild(weeklyPoster);
     });
     
-    // Add main poster
-    const mainPoster = createPastPoster(monthData.mainPoster, true);
-    
-    // Assemble layout: left column, main poster, right column
-    grid.appendChild(leftColumn);
-    grid.appendChild(mainPoster);
-    grid.appendChild(rightColumn);
-    
-    item.appendChild(grid);
+    item.appendChild(mainPoster);
+    item.appendChild(weeklyPosters);
     
     return item;
 }
 
-function createPastPoster(posterData, isMain = false) {
-    const container = document.createElement('div');
-    container.className = `past-poster ${isMain ? 'main' : ''}`;
-    
-    const img = document.createElement('img');
-    img.src = `https://drive.google.com/thumbnail?id=${posterData.imageId}&sz=w300`;
-    img.alt = posterData.title;
-    img.loading = 'lazy';
-    
-    // Handle image load error
-    img.onerror = () => {
-        const size = isMain ? '300px' : '150px';
-        const height = isMain ? 'calc(90vh - 120px)' : '200px';
-        const maxHeight = isMain ? 'max-height: 700px;' : '';
-        container.innerHTML = `
-            <div style="
-                width: ${size};
-                height: ${height};
-                ${maxHeight}
-                border: 2px dashed black;
-                border-radius: ${isMain ? '8px' : '6px'};
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: white;
-                margin: 0 auto;
-                cursor: pointer;
-            ">
-                <div style="text-align: center;">
-                    <p style="font-size: ${isMain ? '3rem' : '1.5rem'}; margin: 0;">📅</p>
-                </div>
-            </div>
-        `;
-    };
-    
-    // Add click handler for enlargement
-    img.addEventListener('click', () => openPosterModal(posterData));
-    container.style.cursor = 'pointer';
-    
-    container.appendChild(img);
-    
-    return container;
-}
 
 function openPosterModal(posterData) {
     const modal = document.createElement('div');

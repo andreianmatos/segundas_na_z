@@ -181,14 +181,25 @@ p {
     display: none;
     flex-direction: column;
     cursor: pointer;
-    gap: 6px;
+    gap: 5px;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.nav-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: scale(1.05);
 }
 
 .bar {
-    width: 20px;
-    height: 1px;
+    width: 22px;
+    height: 2px;
     background-color: black;
-    transition: 0.3s;
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
 }
 
 /* Main Content */
@@ -2807,92 +2818,139 @@ p {
     }
 }
 
-/* Clean Image Grid Styles - Scattered Vertical Layout */
+/* Clean Image Grid Styles - Artistic Scattered Layout with Bigger Items */
 .clean-image-grid {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 2rem auto;
     padding: 2rem;
-    /* No min-height needed - flexbox handles layout */
     position: relative;
+    min-height: 100vh;
 }
 
 .clean-image-item {
-    position: relative;
-    width: 280px;
-    height: 280px;
-    margin-bottom: 1.5rem;
+    position: absolute;
+    width: auto;
+    max-width: 400px;
+    height: auto;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    display: inline-block;
-    vertical-align: top;
+    transition: opacity 0.5s ease, transform 0.5s ease, all 0.4s ease;
+    background: none;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
 }
 
-/* Horizontal positioning - allow multiple per row */
-.clean-image-item:nth-child(8n+1) {
-    margin-left: 5%;
-    margin-right: 2%;
+/* Artistic scattered positioning - good spacing, no touching */
+.clean-image-item:nth-child(1) {
+    top: 20px;
+    left: 5%;
 }
 
-.clean-image-item:nth-child(8n+2) {
-    margin-left: 0;
-    margin-right: 5%;
+.clean-image-item:nth-child(2) {
+    top: 20px;
+    right: 5%;
 }
 
-.clean-image-item:nth-child(8n+3) {
-    margin-left: 10%;
-    margin-right: 1%;
-    margin-bottom: 0.5rem;
+.clean-image-item:nth-child(3) {
+    top: 500px;
+    left: 15%;
 }
 
-.clean-image-item:nth-child(8n+4) {
-    margin-left: 15%;
-    margin-right: 3%;
-    margin-bottom: 2rem;
+.clean-image-item:nth-child(4) {
+    top: 500px;
+    right: 15%;
 }
 
-.clean-image-item:nth-child(8n+5) {
-    margin-left: 8%;
-    margin-right: 4%;
-    margin-bottom: 1rem;
+.clean-image-item:nth-child(5) {
+    top: 980px;
+    left: 8%;
 }
 
-.clean-image-item:nth-child(8n+6) {
-    margin-left: 2%;
-    margin-right: 6%;
+.clean-image-item:nth-child(6) {
+    top: 980px;
+    right: 8%;
 }
 
-.clean-image-item:nth-child(8n+7) {
-    margin-left: 12%;
-    margin-right: 2%;
-    margin-bottom: 0.8rem;
+.clean-image-item:nth-child(7) {
+    top: 1460px;
+    left: 12%;
 }
 
-.clean-image-item:nth-child(8n) {
-    margin-left: 6%;
-    margin-right: 1%;
-    margin-bottom: 2.5rem;
+.clean-image-item:nth-child(8) {
+    top: 1460px;
+    right: 12%;
 }
 
-/* Some images get reduced spacing to create horizontal groupings */
-.clean-image-item:nth-child(3n) {
-    margin-bottom: 0.3rem;
+.clean-image-item:nth-child(9) {
+    top: 1940px;
+    left: 18%;
 }
 
-.clean-image-item:nth-child(5n+1) {
-    margin-bottom: 0.4rem;
+.clean-image-item:nth-child(10) {
+    top: 1940px;
+    right: 6%;
 }
 
-.clean-image-item:nth-child(7n+2) {
-    margin-bottom: 0.6rem;
+.clean-image-item:nth-child(11) {
+    top: 2420px;
+    left: 10%;
+}
+
+.clean-image-item:nth-child(12) {
+    top: 2420px;
+    right: 14%;
+}
+
+/* Continue pattern for more items - plenty of space */
+.clean-image-item:nth-child(13) {
+    top: 2900px;
+    left: 5%;
+}
+
+.clean-image-item:nth-child(14) {
+    top: 2900px;
+    right: 5%;
+}
+
+.clean-image-item:nth-child(15) {
+    top: 3380px;
+    left: 15%;
+}
+
+.clean-image-item:nth-child(16) {
+    top: 3380px;
+    right: 15%;
+}
+
+/* Hover effects - only subtle movement, no borders */
+.clean-image-item:hover {
+    transform: translateY(-4px);
+}
+
+/* Videos have same hover as images */
+.clean-image-item.video-item:hover {
+    transform: translateY(-4px);
 }
 
 .clean-image {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    min-width: 400px;
+    max-width: 600px;
+    object-fit: contain;
     display: block;
+    border-radius: 12px;
+    border: 2px solid black;
+}
+
+/* Remove artificial height constraints - let images be their natural size */
+.clean-image-item.portrait .clean-image,
+.clean-image-item.landscape .clean-image,
+.clean-image-item.square .clean-image {
+    height: auto;
+    width: 100%;
 }
 
 .image-overlay {
@@ -2910,32 +2968,69 @@ p {
     pointer-events: none;
 }
 
+.image-info {
+    position: static;
+    background: none;
+    color: #333;
+    padding: 1rem 0 0 0;
+    border: none;
+    text-shadow: none;
+}
+
+.image-info h4 {
+    color: #333;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0 0 0.25rem 0;
+    line-height: 1.3;
+}
+
+.image-info p {
+    color: #666;
+    font-size: 0.85rem;
+    margin: 0;
+    font-weight: 400;
+}
+
 .image-placeholder {
     text-align: center;
-    color: black;
-    padding: 1rem;
+    color: #999;
+    padding: 2rem 1rem;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
 }
 
 .image-placeholder p:first-child {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin: 0 0 0.5rem 0;
 }
 
 .image-placeholder p {
-    margin: 0.25rem 0;
-    font-weight: 500;
+    margin: 0.2rem 0;
+    font-weight: 400;
+    font-size: 0.9rem;
 }
 
 .image-placeholder small {
-    color: black;
-    font-size: 0.85rem;
+    color: #bbb;
+    font-size: 0.8rem;
 }
 
 .image-error {
     text-align: center;
-    color: black;
-    padding: 1rem;
+    color: white;
+    padding: 2rem 1rem;
     font-size: 0.9rem;
+    background: #dc3545;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .clean-image-item:hover .image-overlay {
@@ -2979,6 +3074,94 @@ p {
     border-radius: 0;
     text-align: center;
     color: white;
+}
+
+/* Video containers - proper sizing */
+.video-container {
+    position: relative;
+    width: 100%;
+    min-width: 400px;
+    max-width: 600px;
+    height: auto;
+    aspect-ratio: 16/9; /* Default video aspect ratio */
+    overflow: hidden;
+    border-radius: 12px;
+    border: 2px solid black;
+    background: #000;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+}
+
+/* Remove video indicator completely */
+.video-indicator {
+    display: none;
+}
+
+/* Responsive adjustments for natural aspect ratio layout with external text */
+@media (max-width: 768px) {
+    .clean-image-grid {
+        padding: 1rem;
+    }
+    
+    .clean-image-item {
+        position: relative !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        margin-bottom: 2.5rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .clean-image {
+        max-width: 100%;
+    }
+    
+    .video-container {
+        max-width: 100%;
+    }
+    
+    /* Text is already outside frame, no position adjustment needed */
+    .image-info h4 {
+        font-size: 0.85rem;
+    }
+    
+    .image-info p {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .clean-image-grid {
+        padding: 0.75rem;
+    }
+    
+    .clean-image-item {
+        margin-bottom: 1.5rem;
+    }
+    
+    .image-info h4 {
+        font-size: 0.8rem;
+    }
+    
+    .image-info p {
+        font-size: 0.65rem;
+    }
+}
+
+.video-item:hover .video-container iframe {
+    transform: scale(1.02);
 }
 
 /* Setup card styling */
@@ -3514,31 +3697,248 @@ body:has(.clean-image-grid) .main {
 }
 
 /* Poster Archive System Styles */
+/* Ultra-Minimal Layout - Side by Side Layout */
 .poster-archive-container {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    min-height: 100%; /* Allow content to be taller than container */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    height: calc(100vh - 200px); /* Space between header and footer */
 }
 
 .current-month-section,
 .past-month-item {
-    height: calc(100vh - 120px); /* Account for header and footer */
-    min-height: calc(100vh - 120px); /* Ensure minimum height */
+    height: 100%;
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    box-sizing: border-box;
-    flex-shrink: 0; /* Prevent shrinking */
-}
-
-.past-month-item {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 2rem;
+    gap: 3rem;
+    padding: 0;
 }
 
 .past-month-item:last-child {
     border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* Large Main Poster - Left Side, Centered */
+.main-poster {
+    flex: 0 0 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: rgba(0, 0, 255, 0.1); /* Blue background to show main poster area */
+    border: 2px solid blue; /* Blue border for main poster area */
+}
+
+.main-poster img {
+    max-width: 100%;
+    max-height: 90%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border: 2px solid black;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.main-poster img:hover {
+    transform: scale(1.02);
+}
+
+/* Weekly Posters - Right Side 2x2 Grid */
+.weekly-posters {
+    flex: 0 0 45%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0;
+    height: 100%;
+    background: rgba(255, 0, 0, 0.1); /* Red background to show grid container */
+    border: 2px solid red; /* Red border for grid container */
+}
+
+.weekly-poster {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    background: rgba(0, 255, 0, 0.1); /* Green background for each cell */
+    border: 1px solid green; /* Green border for each cell */
+    min-height: 0;
+    overflow: hidden;
+}
+
+.weekly-poster img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: cover;
+    border: 2px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.weekly-poster img:hover {
+    transform: scale(1.02);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .poster-archive-container {
+        height: auto;
+        min-height: calc(100vh - 200px);
+    }
+    
+    .current-month-section,
+    .past-month-item {
+        flex-direction: column;
+        height: auto;
+        gap: 2rem;
+        padding: 2rem 0;
+    }
+    
+    .main-poster {
+        flex: none;
+        height: 50vh;
+    }
+    
+    .weekly-posters {
+        flex: none;
+        height: 40vh;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 1fr;
+    }
+    
+    .weekly-poster img {
+        object-fit: contain;
+    }
+}
+
+@media (max-width: 768px) {
+    html, body {
+        overflow-x: hidden;
+        max-width: 100%;
+    }
+    
+    .main:has(.poster-archive-container) {
+        height: calc(100vh - 120px);
+        overflow: hidden; /* Prevent any overflow */
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        max-width: 100vw;
+        position: relative;
+    }
+    
+    .poster-archive-container {
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        position: relative;
+    }
+    
+    .current-month-section,
+    .past-month-item {
+        width: 98vw;
+        height: calc(100vh - 140px);
+        padding: 0;
+        margin: 0 auto;
+        border: none;
+        position: relative;
+        overflow: hidden;
+        left: 0;
+        right: 0;
+    }
+    
+    .mobile-carousel {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        transform: translateZ(0); /* Force hardware acceleration */
+    }
+    
+    .carousel-slide {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        box-sizing: border-box;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        margin: 0;
+        overflow: hidden;
+        transform: translateZ(0); /* Force hardware acceleration */
+    }
+    
+    .carousel-slide.active {
+        opacity: 1;
+    }
+    
+    .carousel-slide img {
+        width: calc(100% - 20px);
+        height: calc(100% - 20px);
+        object-fit: cover;
+        border: 2px solid black;
+        border-radius: 12px;
+    }
+    
+    .carousel-controls {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 10px 20px;
+        border-radius: 25px;
+        border: 1px solid #ccc;
+    }
+    
+    .nav-btn {
+        width: 35px;
+        height: 35px;
+        border: none;
+        background: black;
+        color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .nav-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+    }
+    
+    .main-poster,
+    .weekly-posters {
+        display: none;
+    }
 }
 
 .month-layout {
@@ -3590,7 +3990,8 @@ body:has(.clean-image-grid) .main {
 
 .weekly-poster img {
     width: 100%;
-    max-width: 180px;
+    max-width: min(180px, 30vw); /* Responsive to screen width */
+    max-height: calc(20vh); /* Never too tall relative to screen */
     height: auto;
     border: 2px solid black;
     border-radius: 6px;
@@ -3699,31 +4100,71 @@ body:has(.clean-image-grid) .main {
     .past-poster-left,
     .past-poster-right {
         flex-direction: row;
-        gap: 1rem;
+        gap: 0.8rem;
         justify-content: center;
+        flex-wrap: wrap; /* Allow wrapping to create 2x2 grid */
+        max-width: 100%;
     }
     
     .weekly-poster img,
-    .past-poster img {
-        max-width: 120px;
+    .past-poster-left .past-poster img,
+    .past-poster-right .past-poster img {
+        max-width: min(140px, 40vw); /* Slightly larger for 2x2 grid */
+        max-height: calc(18vh); /* Proportional height */
+        flex: 0 0 auto; /* Prevent flex shrinking */
+    }
+    
+    /* Ensure main posters stay large on regular mobile */
+    .past-poster.main img {
+        max-width: 95vw !important; /* Override the above rule */
+        max-height: none !important; /* Remove height restriction */
     }
     
     .main-poster {
-        height: calc(70vh - 100px); /* Reduce height on mobile for better layout */
+        height: calc(50vh - 80px); /* Smaller to fit with weekly posters */
     }
     
     .main-poster img {
-        height: calc(70vh - 100px);
+        height: calc(50vh - 80px);
         max-width: 95vw;
     }
     
     .past-poster.main {
-        height: calc(70vh - 100px);
+        height: calc(50vh - 80px); /* Smaller to fit with weekly posters */
     }
     
     .past-poster.main img {
-        height: calc(70vh - 100px);
+        height: calc(50vh - 80px);
         max-width: 95vw;
+    }
+}
+
+/* Extra small screens - optimize 2x2 grid for weekly posters */
+@media (max-width: 480px) {
+    .weekly-posters-left,
+    .weekly-posters-right {
+        gap: 0.5rem;
+    }
+    
+    /* Small weekly posters only - very specific selectors */
+    .weekly-poster img,
+    .past-poster-left .past-poster img,
+    .past-poster-right .past-poster img {
+        max-width: min(120px, 45vw) !important;
+        max-height: calc(16vh) !important;
+    }
+    
+    /* Ensure ALL main past posters stay large but fit with weekly - higher specificity */
+    .past-poster.main,
+    .main-poster {
+        height: calc(45vh - 60px) !important; /* Smaller to ensure full set fits */
+    }
+    
+    .past-poster.main img,
+    .main-poster img {
+        height: calc(45vh - 60px) !important;
+        max-width: 90vw !important;
+        max-height: none !important;
     }
 }
 
