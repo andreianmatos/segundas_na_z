@@ -30,11 +30,22 @@ function loadGallery() {
     console.log('Gallery items:', items);
     
     if (items.length > 0) {
+        // Calculate gallery height with generous spacing
+        const rows = Math.ceil(items.length / 2);
+        const estimatedHeight = Math.max(2000, rows * 480 + 600);
+        gallery.style.minHeight = estimatedHeight + 'px';
+        
         items.forEach((itemData, index) => {
             if (itemData.id && itemData.id.trim() !== '') {
                 console.log('Creating card for:', itemData);
                 const mediaCard = createMediaCard(itemData, index);
                 gallery.appendChild(mediaCard);
+                
+                // Add staggered animation delay
+                setTimeout(() => {
+                    mediaCard.style.opacity = '1';
+                    mediaCard.style.transform = 'translateY(0)';
+                }, index * 150);
             }
         });
     } else {
@@ -55,49 +66,41 @@ function createImageCard(imageData, index) {
     // Use thumbnail URL format directly (more reliable)
     img.src = `https://drive.google.com/thumbnail?id=${imageData.id}&sz=w400`;
     
-    // Create overlay for hover
-    const overlay = document.createElement('div');
-    overlay.className = 'image-overlay';
+    // Create info section for image details
+    const imageInfo = document.createElement('div');
+    imageInfo.className = 'image-info';
     
     if (imageData.eventName || imageData.date) {
-        overlay.innerHTML = `
-            <div class="overlay-content">
-                ${imageData.eventName ? `<h4>${imageData.eventName}</h4>` : ''}
-                ${imageData.date ? `<p>${imageData.date}</p>` : ''}
-            </div>
+        imageInfo.innerHTML = `
+            ${imageData.eventName ? `<h4>${imageData.eventName}</h4>` : ''}
+            ${imageData.date ? `<p>${imageData.date}</p>` : ''}
         `;
     }
     
-    // Show image when loaded
+    // Show image when loaded - no need to classify aspect ratios
     img.onload = function() {
-        card.style.opacity = '1';
+        // Images will naturally size themselves based on their actual dimensions
+        // No classification needed since we're using natural ratios
     };
     
     // Handle load error - show placeholder
     img.onerror = function() {
-        // Show placeholder if image fails to load
         card.innerHTML = `
-            <div style="
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                height: 280px;
-                background: white;
-                border: 2px solid black;
-                text-align: center;
-            ">
-                <p style="font-size: 2rem;">📷</p>
-                <p>${imageData.eventName || 'Photo'}</p>
+            <div class="image-placeholder">
+                <p>📷</p>
+                <p><strong>${imageData.eventName || 'Photo'}</strong></p>
                 <small>${imageData.date || ''}</small>
+                <p style="margin-top: 1rem; font-size: 0.8rem; color: #666;">
+                    Image could not be loaded
+                </p>
             </div>
         `;
-        card.style.opacity = '1';
+        // Error cards also get animated
     };
     
     card.appendChild(img);
     if (imageData.eventName || imageData.date) {
-        card.appendChild(overlay);
+        card.appendChild(imageInfo);
     }
     
     return card;
@@ -117,80 +120,57 @@ function createMediaCard(itemData, index) {
 
 function createVideoCard(videoData, index) {
     const card = document.createElement('div');
-    card.className = 'clean-image-item';
+    card.className = 'clean-image-item video-item';
     
-    // Create video thumbnail/preview
+    // Create video container with responsive aspect ratio
     const videoContainer = document.createElement('div');
     videoContainer.className = 'video-container';
-    videoContainer.style.cssText = `
-        position: relative;
-        width: 100%;
-        height: 280px;
-        background: #000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        overflow: hidden;
-    `;
     
-    // Create play button overlay
-    const playButton = document.createElement('div');
-    playButton.innerHTML = '▶';
-    playButton.style.cssText = `
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(255,255,255,0.9);
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        cursor: pointer;
-        z-index: 2;
-    `;
+    // Determine aspect ratio from video data if available, default to 16:9
+    const aspectRatio = videoData.aspectRatio || '16:9';
+    if (aspectRatio === '1:1' || aspectRatio === 'square') {
+        videoContainer.classList.add('square');
+    } else if (aspectRatio === '9:16' || aspectRatio === 'vertical') {
+        videoContainer.classList.add('vertical');
+    }
+    // Default is 16:9 landscape
     
-    // Try to use thumbnail if available, otherwise show placeholder
-    const thumbnail = document.createElement('img');
-    thumbnail.style.cssText = `
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0.7;
-    `;
-    thumbnail.src = `https://drive.google.com/thumbnail?id=${videoData.id}&sz=w400`;
-    thumbnail.onerror = () => {
-        thumbnail.style.display = 'none';
-        videoContainer.style.background = '#333';
-    };
+    // Create embedded video directly
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://drive.google.com/file/d/${videoData.id}/preview`;
+    iframe.allow = "autoplay";
+    iframe.loading = "lazy";
     
-    videoContainer.appendChild(thumbnail);
-    videoContainer.appendChild(playButton);
-    
-    // Create overlay for hover
-    const overlay = document.createElement('div');
-    overlay.className = 'image-overlay';
+    // Create info section for video details
+    const videoInfo = document.createElement('div');
+    videoInfo.className = 'image-info';
     
     if (videoData.eventName || videoData.date) {
-        overlay.innerHTML = `
-            <div class="overlay-content">
-                🎥 ${videoData.eventName ? `<h4>${videoData.eventName}</h4>` : ''}
-                ${videoData.date ? `<p>${videoData.date}</p>` : ''}
-            </div>
+        videoInfo.innerHTML = `
+            ${videoData.eventName ? `<h4>${videoData.eventName}</h4>` : ''}
+            ${videoData.date ? `<p>${videoData.date}</p>` : ''}
         `;
     }
     
+    videoContainer.appendChild(iframe);
     card.appendChild(videoContainer);
-    card.appendChild(overlay);
     
-    // Click to play video
-    card.addEventListener('click', () => openVideoModal(videoData));
+    if (videoData.eventName || videoData.date) {
+        card.appendChild(videoInfo);
+    }
     
-    card.style.opacity = '1';
+    // Add click handler for fullscreen option on the info area
+    if (videoInfo) {
+        videoInfo.style.cursor = 'pointer';
+        videoInfo.addEventListener('click', (e) => {
+            e.preventDefault();
+            openVideoModal(videoData);
+        });
+    }
+    
+    // Show card with animation (handled by loadGallery function)
+    // Don't set opacity here anymore since we use staggered animation
+    
     return card;
 }
 

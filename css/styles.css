@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
+/* stray closing brace removed to fix CSS parse error */
 
 body {
     font-family: Arial, sans-serif;
@@ -3699,23 +3699,36 @@ body:has(.clean-image-grid) .main {
 /* Poster Archive System Styles */
 /* Ultra-Minimal Layout - Side by Side Layout */
 .poster-archive-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    height: calc(100vh - 200px); /* Space between header and footer */
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: visible;
+    box-sizing: border-box;
 }
 
 .current-month-section,
-.past-month-item {
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 2rem;
-    gap: 3rem;
-    padding: 0;
+    .past-month-item {
+        height: calc(100vh - 120px); /* adjust 120px to match header+footer height */
+        min-height: calc(100vh - 120px);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        border-bottom: none;
+        margin-bottom: 0;
+        gap: 3rem;
+        padding: 2rem;
+        box-sizing: border-box;
+        border: none;
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
+        width: 100%;
+        max-width: 100vw;
+        margin: 0 auto;
 }
 
 .past-month-item:last-child {
@@ -3725,18 +3738,22 @@ body:has(.clean-image-grid) .main {
 
 /* Large Main Poster - Left Side, Centered */
 .main-poster {
-    flex: 0 0 50%;
+    flex: 1 1 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
-    background: rgba(0, 0, 255, 0.1); /* Blue background to show main poster area */
-    border: 2px solid blue; /* Blue border for main poster area */
+    min-height: 0;
+    background: none;
+    border: none;
+    max-width: 48%;
+    max-height: 100%;
+    box-sizing: border-box;
 }
 
 .main-poster img {
     max-width: 100%;
-    max-height: 90%;
+    max-height: 100%;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -3758,8 +3775,11 @@ body:has(.clean-image-grid) .main {
     grid-template-rows: 1fr 1fr;
     gap: 0;
     height: 100%;
-    background: rgba(255, 0, 0, 0.1); /* Red background to show grid container */
-    border: 2px solid red; /* Red border for grid container */
+    background: none;
+    border: none;
+    max-width: 48%;
+    max-height: 100%;
+    box-sizing: border-box;
 }
 
 .weekly-poster {
@@ -3767,22 +3787,26 @@ body:has(.clean-image-grid) .main {
     align-items: center;
     justify-content: center;
     padding: 0.25rem;
-    background: rgba(0, 255, 0, 0.1); /* Green background for each cell */
-    border: 1px solid green; /* Green border for each cell */
+    background: none;
+    border: none;
     min-height: 0;
     overflow: hidden;
+    flex-direction: column;
 }
 
 .weekly-poster img {
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    max-height: none;
-    object-fit: cover;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
     border: 2px solid black;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
+    display: block;
+    margin: auto;
+    box-sizing: border-box;
 }
 
 .weekly-poster img:hover {
@@ -3949,6 +3973,8 @@ body:has(.clean-image-grid) .main {
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
+    height: 100vh;
+    min-height: 100vh;
 }
 
 .weekly-posters-left,
@@ -3960,24 +3986,24 @@ body:has(.clean-image-grid) .main {
 }
 
 .main-poster {
-    flex: 0 0 auto;
+    flex: 1 1 50%;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: calc(90vh - 120px); /* Account for header and footer */
+    height: 90vh;
+    min-height: 0;
 }
-
 .main-poster img {
+    max-width: 100%;
     width: auto;
-    height: calc(90vh - 120px); /* Account for header and footer */
-    max-width: 90vw; /* Don't exceed viewport width */
+    height: 100%;
+    object-fit: contain;
     border: 2px solid black;
-    border-radius: 8px;
+    border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     transition: transform 0.3s ease;
     cursor: pointer;
-    object-fit: contain; /* Maintain aspect ratio */
 }
 
 .main-poster img:hover {
@@ -3989,15 +4015,18 @@ body:has(.clean-image-grid) .main {
 }
 
 .weekly-poster img {
-    width: 100%;
-    max-width: min(180px, 30vw); /* Responsive to screen width */
-    max-height: calc(20vh); /* Never too tall relative to screen */
+    width: auto;
     height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
     border: 2px solid black;
     border-radius: 6px;
     opacity: 0.8;
     transition: opacity 0.3s ease, transform 0.3s ease;
     cursor: pointer;
+    display: block;
+    margin: auto;
 }
 
 .weekly-poster img:hover {
@@ -4017,6 +4046,9 @@ body:has(.clean-image-grid) .main {
 .past-months-section {
     margin: 0;
     padding: 0;
+    display: block;
+    /* Hide past months by default, show only when scrolled */
+    /* We'll use JS to add a class to reveal when scrolled if needed */
 }
 
 .past-month-grid {
@@ -4027,7 +4059,8 @@ body:has(.clean-image-grid) .main {
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
-}
+    height: 100vh;
+    object-fit: contain;
 
 .past-poster-left,
 .past-poster-right {
@@ -4041,13 +4074,13 @@ body:has(.clean-image-grid) .main {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: calc(90vh - 120px); /* Same as current month, account for header/footer */
+    height: 100%;
 }
 
 .past-poster.main img {
     width: auto;
-    height: calc(90vh - 120px);
-    max-width: 90vw;
+    height: 100%;
+    max-width: 100%;
     border: 2px solid black;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -4124,19 +4157,7 @@ body:has(.clean-image-grid) .main {
         height: calc(50vh - 80px); /* Smaller to fit with weekly posters */
     }
     
-    .main-poster img {
-        height: calc(50vh - 80px);
-        max-width: 95vw;
-    }
-    
-    .past-poster.main {
-        height: calc(50vh - 80px); /* Smaller to fit with weekly posters */
-    }
-    
-    .past-poster.main img {
-        height: calc(50vh - 80px);
-        max-width: 95vw;
-    }
+    /* Remove duplicate .main-poster img and .past-poster.main img rules here */
 }
 
 /* Extra small screens - optimize 2x2 grid for weekly posters */
@@ -4161,11 +4182,7 @@ body:has(.clean-image-grid) .main {
     }
     
     .past-poster.main img,
-    .main-poster img {
-        height: calc(45vh - 60px) !important;
-        max-width: 90vw !important;
-        max-height: none !important;
-    }
+    /* Remove duplicate .main-poster img rule here */
 }
 
 /* Main Image Styles (for index page) */
