@@ -94,3 +94,45 @@ function showErrorMessage(message, container) {
         }
     }, 5000);
 }
+
+// Proportional scaling for homepage hero content
+function scaleHomepageHero() {
+    const heroSection = document.querySelector('.homepage-hero-section');
+    const heroContent = document.querySelector('.hero-content');
+    
+    if (!heroSection || !heroContent) return;
+    
+    // Reset scale to measure natural size
+    heroContent.style.setProperty('--hero-scale', '1');
+    
+    // Force layout recalculation
+    heroContent.offsetHeight;
+    
+    // Get dimensions
+    const containerHeight = heroSection.clientHeight;
+    const contentHeight = heroContent.scrollHeight;
+    
+    // Calculate scale factor with some padding (85% of available space)
+    let scale = Math.min(1, (containerHeight * 0.85) / contentHeight);
+    
+    // Don't scale up, only down
+    scale = Math.min(1, scale);
+    
+    // Apply the scale
+    heroContent.style.setProperty('--hero-scale', scale);
+}
+
+// Run on homepage only
+if (document.querySelector('.homepage')) {
+    // Initial scale
+    window.addEventListener('load', () => {
+        setTimeout(scaleHomepageHero, 100);
+    });
+    
+    // Re-scale on window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(scaleHomepageHero, 100);
+    });
+}

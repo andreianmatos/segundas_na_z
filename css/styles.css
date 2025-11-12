@@ -215,6 +215,8 @@ p {
     flex: 1 1 auto;
     position: relative;
     z-index: 10;
+    min-height: 0;
+    height: 100%;
 }
 
 /* Hero Section - Gallery Style */
@@ -3687,53 +3689,65 @@ body:has(.clean-image-grid) .main {
 }
 
 /* Homepage Hero Section */
+/* Homepage Hero Section - Fit perfectly without scroll */
 .homepage-hero-section {
-        background: #ff2222 !important; /* TEMP: solid red for absolute visibility */
-    border: 8px solid #000 !important; /* TEMP: thick black border for debugging */
-    flex: 1;
+    background: none;
+    flex: 1 1 auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2vw 0;
+    padding: 0;
     overflow: hidden;
-    min-height: calc(100vh - 140px);
+    min-height: 0;
+    height: 100%;
 }
+
 
 /* Center the inner container inside the hero and make it fill the hero height */
 .homepage-hero-section > .container {
+    background: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
     min-height: 0;
+    height: 100%;
+    width: 100%;
     box-sizing: border-box;
 }
 
 .hero-content {
-    background: blue !important; /* TEMP: solid red for absolute visibility */
-    border: 8px solid #000 !important; /* TEMP: thick black border for debugging */
     text-align: center;
     max-width: clamp(320px, 70vw, 700px);
     margin: 0 auto;
-    padding: clamp(0.5rem, 3vw, 2.5rem);
+    padding: clamp(0.5rem, 2vh, 1.5rem);
     align-self: center;
-    max-height: calc(100% - 4rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     box-sizing: border-box;
+    transform: scale(var(--hero-scale, 1));
+    transform-origin: center;
 }
 
 .simple-logo {
-    max-width: clamp(120px, 30vw, 240px);
+    max-width: clamp(140px, 32vw, 260px); /* Increased size */
+    max-height: clamp(110px, 20vh, 200px); /* Increased size */
+    width: auto;
     height: auto;
-    margin: 0 auto 2rem auto;
+    margin: 0 auto clamp(2.2rem, 5vh, 3.5rem) auto; /* More space below logo */
     display: block;
+    object-fit: contain;
 }
 
 .zdb-logo {
-    max-width: clamp(60px, 12vw, 110px);
+    max-width: clamp(50px, 10vw, 90px);
+    max-height: clamp(40px, 8vh, 70px);
+    width: auto;
     height: auto;
-    margin: 2rem auto 0 auto;
+    margin: clamp(0.8rem, 2vh, 1.5rem) auto 0 auto;
     display: block;
     opacity: 0.7;
+    object-fit: contain;
 }
 
 .hero-content p {
