@@ -84,75 +84,62 @@ function createCurrentMonthSection(monthData) {
         // Create slides
         allPosters.forEach((poster, index) => {
             const slide = document.createElement('div');
-            slide.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
-            
+            slide.className = `carousel-slide${index === 0 ? ' active' : ''}`;
             const img = document.createElement('img');
             img.src = `https://drive.google.com/thumbnail?id=${poster.id}&sz=w800`;
             img.alt = poster.title;
-            
             slide.appendChild(img);
             carousel.appendChild(slide);
         });
-        
-        // Create controls
-        const controls = document.createElement('div');
-        controls.className = 'carousel-controls';
-        
-        const prevBtn = document.createElement('button');
-        prevBtn.className = 'nav-btn';
-        prevBtn.innerHTML = '←';
-        prevBtn.disabled = true;
-        
-        
-        const nextBtn = document.createElement('button');
-        nextBtn.className = 'nav-btn';
-        nextBtn.innerHTML = '→';
-        nextBtn.disabled = allPosters.length <= 1;
-        
+        // Add indicator dots
+        const indicators = document.createElement('div');
+        indicators.className = 'carousel-indicators';
+        allPosters.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            indicators.appendChild(dot);
+        });
+        // Always show all slides, hide only non-active
         function updateSlide() {
             carousel.querySelectorAll('.carousel-slide').forEach((slide, i) => {
+                slide.style.display = (i === currentSlide) ? 'flex' : 'none';
                 slide.classList.toggle('active', i === currentSlide);
             });
-            prevBtn.disabled = currentSlide === 0;
-            nextBtn.disabled = currentSlide === allPosters.length - 1;
+            indicators.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
         }
-        
-        prevBtn.addEventListener('click', () => {
-            if (currentSlide > 0) {
-                currentSlide--;
-                updateSlide();
-            }
-        });
-        
-        nextBtn.addEventListener('click', () => {
-            if (currentSlide < allPosters.length - 1) {
-                currentSlide++;
-                updateSlide();
-            }
-        });
-        
-        // Touch support
         let startX = 0;
         carousel.addEventListener('touchstart', e => startX = e.touches[0].clientX);
         carousel.addEventListener('touchend', e => {
             const endX = e.changedTouches[0].clientX;
             const diff = startX - endX;
             if (Math.abs(diff) > 50) {
-                if (diff > 0 && currentSlide < allPosters.length - 1) {
-                    currentSlide++;
+                if (diff > 0) {
+                    // Swipe left
+                    if (currentSlide < allPosters.length - 1) {
+                        currentSlide++;
+                    } else {
+                        currentSlide = 0; // wrap to first
+                    }
                     updateSlide();
-                } else if (diff < 0 && currentSlide > 0) {
-                    currentSlide--;
+                } else if (diff < 0) {
+                    // Swipe right
+                    if (currentSlide > 0) {
+                        currentSlide--;
+                    } else {
+                        currentSlide = allPosters.length - 1; // wrap to last
+                    }
                     updateSlide();
                 }
             }
         });
-        
-        controls.appendChild(prevBtn);
-        controls.appendChild(nextBtn);
-        
+        updateSlide();
         section.appendChild(carousel);
-        section.appendChild(controls);
+        section.appendChild(indicators);
+        return section;
+
+        section.appendChild(carousel);
         return section;
     }
     
@@ -309,11 +296,11 @@ function createPastMonthItem(monthData) {
     const item = document.createElement('div');
     item.className = 'past-month-item';
     
-    // For mobile: create same simple slide carousel
+    // For mobile: create same simple slide carousel (no arrows)
     if (window.innerWidth <= 768) {
         const carousel = document.createElement('div');
         carousel.className = 'mobile-carousel';
-        
+
         // Get all posters
         const allPosters = [];
         if (monthData.mainPoster?.imageId) {
@@ -326,81 +313,68 @@ function createPastMonthItem(monthData) {
                 }
             });
         }
-        
+
         let currentSlide = 0;
-        
+
         // Create slides
         allPosters.forEach((poster, index) => {
             const slide = document.createElement('div');
-            slide.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
-            
+            slide.className = `carousel-slide${index === 0 ? ' active' : ''}`;
             const img = document.createElement('img');
             img.src = `https://drive.google.com/thumbnail?id=${poster.id}&sz=w800`;
             img.alt = poster.title;
-            
             slide.appendChild(img);
             carousel.appendChild(slide);
         });
-        
-        // Create controls
-        const controls = document.createElement('div');
-        controls.className = 'carousel-controls';
-        
-        const prevBtn = document.createElement('button');
-        prevBtn.className = 'nav-btn';
-        prevBtn.innerHTML = '←';
-        prevBtn.disabled = true;
-        
-        
-        const nextBtn = document.createElement('button');
-        nextBtn.className = 'nav-btn';
-        nextBtn.innerHTML = '→';
-        nextBtn.disabled = allPosters.length <= 1;
-        
+        // Add indicator dots
+        const indicators = document.createElement('div');
+        indicators.className = 'carousel-indicators';
+        allPosters.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            indicators.appendChild(dot);
+        });
+        // Always show all slides, hide only non-active
         function updateSlide() {
             carousel.querySelectorAll('.carousel-slide').forEach((slide, i) => {
+                slide.style.display = (i === currentSlide) ? 'flex' : 'none';
                 slide.classList.toggle('active', i === currentSlide);
             });
-            prevBtn.disabled = currentSlide === 0;
-            nextBtn.disabled = currentSlide === allPosters.length - 1;
+            indicators.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
         }
-        
-        prevBtn.addEventListener('click', () => {
-            if (currentSlide > 0) {
-                currentSlide--;
-                updateSlide();
-            }
-        });
-        
-        nextBtn.addEventListener('click', () => {
-            if (currentSlide < allPosters.length - 1) {
-                currentSlide++;
-                updateSlide();
-            }
-        });
-        
-        // Touch support
         let startX = 0;
         carousel.addEventListener('touchstart', e => startX = e.touches[0].clientX);
         carousel.addEventListener('touchend', e => {
             const endX = e.changedTouches[0].clientX;
             const diff = startX - endX;
             if (Math.abs(diff) > 50) {
-                if (diff > 0 && currentSlide < allPosters.length - 1) {
-                    currentSlide++;
+                if (diff > 0) {
+                    // Swipe left
+                    if (currentSlide < allPosters.length - 1) {
+                        currentSlide++;
+                    } else {
+                        currentSlide = 0; // wrap to first
+                    }
                     updateSlide();
-                } else if (diff < 0 && currentSlide > 0) {
-                    currentSlide--;
+                } else if (diff < 0) {
+                    // Swipe right
+                    if (currentSlide > 0) {
+                        currentSlide--;
+                    } else {
+                        currentSlide = allPosters.length - 1; // wrap to last
+                    }
                     updateSlide();
                 }
             }
         });
-        
-        controls.appendChild(prevBtn);
-        controls.appendChild(nextBtn);
-        
+        updateSlide();
         item.appendChild(carousel);
-        item.appendChild(controls);
+        item.appendChild(indicators);
+        return item;
+
+        item.appendChild(carousel);
         return item;
     }
     

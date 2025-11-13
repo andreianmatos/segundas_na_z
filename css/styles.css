@@ -1,3 +1,172 @@
+    .carousel-indicators {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1.2rem;
+        width: 100%;
+    }
+    .carousel-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #bbb;
+        display: inline-block;
+        transition: background 0.2s;
+    }
+    .carousel-dot.active {
+        background: #222;
+    }
+html, body {
+    overflow-x: hidden !important;
+}
+@media (max-width: 768px) {
+    .mobile-carousel {
+        left: 0 !important;
+        right: 0 !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .poster-archive-container,
+    .current-month-section,
+    .past-month-item {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        overflow-x: hidden !important;
+    }
+    .mobile-carousel {
+        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 85vh !important;
+        min-height: 220px !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+        overflow: hidden !important;
+        display: block !important;
+    }
+    .carousel-slide {
+        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 85vh !important;
+        min-height: 0 !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        position: relative !important;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+    .carousel-slide img {
+        display: block;
+        margin: 0 auto;
+        max-width: 98%;
+        max-height: 60vh;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+        /* border: 2px solid black; */
+        box-sizing: border-box;
+        background: #fff;
+    }
+}
+/* Prevent horizontal scroll in poster archive */
+.poster-archive-container {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+}
+.current-month-section,
+.past-month-item {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+}
+@media (max-width: 768px) {
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+    .poster-archive-container,
+    .current-month-section,
+    .past-month-item {
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+    }
+}
+@media (max-width: 768px) {
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255,255,255,0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
+        padding: 0;
+        margin: 0;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+    }
+    .nav-menu.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .nav-link {
+        font-size: 2rem;
+        color: black;
+        font-weight: 400;
+        background: none;
+        border: none;
+        padding: 0.5rem 2rem;
+        border-radius: 12px;
+        transition: background 0.2s, color 0.2s;
+        text-align: center;
+    }
+    .nav-link:hover, .nav-link.active {
+        background: rgba(0,0,0,0.07);
+        color: #222;
+    }
+        .nav-toggle {
+            display: flex;
+            /* Restore original placement: inside nav-container, not fixed */
+            position: static;
+            background: none;
+            border: none;
+            box-shadow: none;
+            z-index: auto;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 5px;
+        }
+}
+@media (max-width: 768px) {
+    .header {
+        background: none !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        border-bottom: none !important;
+        backdrop-filter: none !important;
+    }
+    .footer {
+        display: none !important;
+    }
+}
 /* Reset and Base Styles - Artistic Minimal Design */
 * {
     margin: 0;
