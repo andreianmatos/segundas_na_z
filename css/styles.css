@@ -22,6 +22,29 @@ html, body {
     overflow-x: hidden !important;
 }
 @media (max-width: 768px) {
+        html, body {
+            overflow-y: hidden !important;
+            height: 100vh !important;
+        }
+        body {
+            position: fixed !important;
+            width: 100vw !important;
+        }
+        .main {
+            height: 100vh !important;
+            min-height: 100vh !important;
+            overflow: hidden !important;
+        }
+        .poster-archive-container {
+            position: relative !important;
+            height: 100vh !important;
+            min-height: 100vh !important;
+            max-height: 100vh !important;
+            overflow-y: scroll !important;
+            -webkit-overflow-scrolling: touch;
+            scroll-padding-top: 0px !important;
+            scroll-padding-bottom: 0px !important;
+        }
     .mobile-carousel {
         width: 100vw !important;
         max-width: 100vw !important;
@@ -4148,5 +4171,60 @@ body:has(.clean-image-grid) .main {
         padding-left: 0 !important;
         padding-right: 0 !important;
         box-sizing: border-box !important;
+    }
+    .current-month-section,
+    .past-month-item {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: stretch !important;
+        min-height: 100vh !important;
+        height: 100vh !important;
+        width: 100vw !important;
+        box-sizing: border-box !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        scroll-snap-align: center;
+        background: none !important;
+    }
+    .carousel-group-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+        min-height: 0;
+        box-sizing: border-box;
+    }
+    .poster-archive-container > .current-month-section:first-child,
+    .poster-archive-container > .past-month-item:last-child {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    .poster-archive-container {
+        scroll-snap-type: y mandatory;
+        overflow-y: scroll;
+        height: 100vh;
+    }
+    .carousel-group-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        max-width: 100vw;
+        max-height: 80vh;
+        min-height: 0;
+        box-sizing: border-box;
+    }
+    .carousel-indicators {
+        margin-bottom: env(safe-area-inset-bottom, 2vh) !important;
+        margin-top: 1.5vh !important;
+    }
+    .mobile-carousel {
+        max-height: 65vh !important;
     }
 }
