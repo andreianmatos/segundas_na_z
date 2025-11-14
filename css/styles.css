@@ -24,17 +24,24 @@ html, body {
 @media (max-width: 768px) {
     .mobile-carousel {
         width: 100vw !important;
+        max-width: 100vw !important;
+        min-width: 0 !important;
         height: 70vh !important;
         min-height: 220px !important;
-        max-width: 100vw !important;
-        margin: 0 auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
         box-sizing: border-box !important;
         position: relative !important;
         overflow: hidden !important;
-        display: block !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
     .carousel-slide {
-        width: 100%;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        min-width: 0 !important;
         height: 100%;
         position: absolute;
         top: 0;
@@ -45,7 +52,8 @@ html, body {
         box-sizing: border-box;
         opacity: 0;
         transition: opacity 0.3s ease;
-        margin: 0;
+        margin: 0 !important;
+        padding: 0 !important;
         overflow: hidden;
         z-index: 1;
     }
@@ -56,14 +64,24 @@ html, body {
     .carousel-slide img {
         display: block;
         margin: 0 auto;
-        max-width: 98%;
-        max-height: 60vh;
-        width: 100%;
-        height: auto;
-        object-fit: contain;
+        max-width: 96vw !important;
+        max-height: 60vh !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
         border-radius: 8px;
         box-sizing: border-box;
         background: #fff;
+    }
+    .carousel-dots {
+        width: 100vw !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin: 1.5vh 0 0 0 !important;
+        padding: 0 !important;
+        position: relative;
+        z-index: 2;
     }
 }
 /* Prevent horizontal scroll in poster archive */
@@ -3039,7 +3057,6 @@ body:has(.clean-image-grid) .main {
     justify-content: center;
     height: 100%;
     min-height: 0;
-    background: #fffbe6;
     border: none;
     border-radius: 0;
     box-shadow: none;
