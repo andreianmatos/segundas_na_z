@@ -25,18 +25,29 @@ html, body {
         html, body {
             overflow-y: hidden !important;
             height: 100vh !important;
-        }
-        body {
-            position: fixed !important;
+        body.schedule-page {
+            overflow: hidden !important;
+            height: 100vh !important;
             width: 100vw !important;
+            position: fixed !important;
         }
-        .main {
+        body.schedule-page .main {
+            overflow: hidden !important;
             height: 100vh !important;
             min-height: 100vh !important;
-            overflow: hidden !important;
+            width: 100vw !important;
         }
-        .poster-archive-container {
-            position: relative !important;
+        body.archive-page {
+            overflow-y: auto !important;
+            height: auto !important;
+            position: static !important;
+        }
+        body.archive-page .main {
+            overflow-y: auto !important;
+            height: auto !important;
+            min-height: 0 !important;
+            width: 100vw !important;
+        }
             height: 100vh !important;
             min-height: 100vh !important;
             max-height: 100vh !important;
@@ -3922,14 +3933,13 @@ body:has(.clean-image-grid) .main {
 /* Homepage Hero Section - Fit perfectly without scroll */
 .homepage-hero-section {
     background: none;
-    flex: 1 1 auto;
+    min-height: calc(100vh - 64px - 56px); /* header ~64px, footer ~56px, adjust as needed */
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
     overflow: hidden;
-    min-height: 0;
-    height: 100%;
+    box-sizing: border-box;
 }
 
 
@@ -3949,11 +3959,12 @@ body:has(.clean-image-grid) .main {
     text-align: center;
     max-width: clamp(320px, 70vw, 700px);
     margin: 0 auto;
-    padding: clamp(0.5rem, 2vh, 1.5rem);
+    padding: 0;
     align-self: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    height: 100%;
     box-sizing: border-box;
     transform: scale(var(--hero-scale, 1));
     transform-origin: center;
