@@ -1,3 +1,23 @@
+    @media (min-width: 700px) {
+        .simple-logo {
+            max-width: 200px;
+            width: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .zdb-logo {
+            max-width: 90px;
+            width: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-content p:first-of-type {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+    }
     .carousel-indicators {
         display: flex;
         justify-content: center;
@@ -4277,7 +4297,8 @@ body:has(.clean-image-grid) .main {
     }
     
     .simple-logo {
-        max-width: 200px;
+        width: auto;
+        max-width: 100px;
         margin-bottom: 2rem;
         display: block;
         margin-left: auto;
@@ -4285,7 +4306,8 @@ body:has(.clean-image-grid) .main {
     }
     
     .zdb-logo {
-        max-width: 100px;
+        width: auto;
+        max-width: 48px;
         display: block;
         margin: 2rem auto 0 auto;
     }
