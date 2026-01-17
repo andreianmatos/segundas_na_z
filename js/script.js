@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     
     const posterFiles = ['monthly_poster.webp', 'week1.webp', 'week2.webp', 'week3.webp', 'week4.webp'];
-    const eventFiles = ['1.webp', '2.webp', '3.webp', '4.webp', '5.webp', '7.webp', '8.webp'];
+    const eventFiles = ['1.webp', '2.webp', '3.webp', '4.webp', '5.webp', '6.webp', '7.webp', '8.webp'];
     const youtubeIDs = ['BRGZ-pxAiPw']; 
 
     const containers = {
