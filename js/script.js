@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     
     const posterFiles = ['monthly_poster.png', 'week1.png', 'week2.png', 'week3.png', 'week4.png'];
-    const eventFiles = ['1.jpg', '2.JPG', '3.JPG', '4.jpg', '5.JPG', '6.JPG', '7.jpg', '8.JPG'];
+    const eventFiles = ['1.jpg', '2.JPG', '3.JPG', '4.jpg', '5.JPG', '6.JPG', '7.JPG', '8.JPG'];
     const youtubeIDs = ['BRGZ-pxAiPw']; 
 
     const containers = {
