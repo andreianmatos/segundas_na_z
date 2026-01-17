@@ -100,14 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupDrag(item) {
         let isDragging = false;
         let startX, startY, initialL, initialT;
+        let dragThreshold = 10; // Minimum pixels to move before starting drag
 
         const onStart = (e) => {
-            isDragging = true;
-            item.classList.add('dragging');
             const evt = e.type.includes('touch') ? e.touches[0] : e;
             startX = evt.clientX; startY = evt.clientY;
             initialL = parseFloat(item.style.left); initialT = parseFloat(item.style.top);
-            
+
             document.addEventListener('mousemove', onMove);
             document.addEventListener('touchmove', onMove, { passive: false });
             document.addEventListener('mouseup', onEnd);
@@ -115,9 +114,20 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const onMove = (e) => {
-            if (!isDragging) return;
-            if (e.type === 'touchmove') e.preventDefault();
             const evt = e.type.includes('touch') ? e.touches[0] : e;
+            const deltaX = Math.abs(evt.clientX - startX);
+            const deltaY = Math.abs(evt.clientY - startY);
+
+            // Only start dragging if moved enough (prevents accidental drags during scroll)
+            if (!isDragging && (deltaX > dragThreshold || deltaY > dragThreshold)) {
+                isDragging = true;
+                item.classList.add('dragging');
+                if (e.type === 'touchmove') e.preventDefault();
+            }
+
+            if (!isDragging) return;
+
+            if (e.type === 'touchmove') e.preventDefault();
 
             let nx = initialL + (evt.clientX - startX);
             let ny = initialT + (evt.clientY - startY);
@@ -133,8 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const onEnd = () => {
+            if (isDragging) {
+                item.classList.remove('dragging');
+            }
             isDragging = false;
-            item.classList.remove('dragging');
             document.removeEventListener('mousemove', onMove);
             document.removeEventListener('touchmove', onMove);
         };
@@ -188,4 +200,25 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(window.resT);
         window.resT = setTimeout(initPositions, 200);
     });
+
+    // Prevent pull-to-refresh on mobile
+    let startY = 0;
+    document.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+    }, { passive: false });
+
+    document.addEventListener('touchmove', (e) => {
+        const currentY = e.touches[0].clientY;
+        const diffY = startY - currentY;
+
+        // Prevent pull-to-refresh at top of page (pulling down)
+        if (window.scrollY === 0 && diffY < -50) {
+            e.preventDefault();
+        }
+
+        // Prevent pull-to-refresh at bottom of page (pulling up)
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && diffY > 50) {
+            e.preventDefault();
+        }
+    }, { passive: false });
 });
