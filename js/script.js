@@ -1,16 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-
+    
     const posterFiles = ['monthly_poster.png', 'week1.png', 'week2.png', 'week3.png', 'week4.png'];
     const eventFiles = ['1.jpg', '2.JPG', '3.JPG', '4.jpg', '5.JPG', '6.JPG', '7.JPG', '8.JPG'];
-    const youtubeIDs = ['BRGZ-pxAiPw'];
+    const youtubeIDs = ['BRGZ-pxAiPw']; 
 
     const containers = {
         prog: document.getElementById('posters-container'),
         log: document.getElementById('events-container')
     };
 
-    // Track width to avoid unnecessary repositioning on mobile height changes
     let lastWidth = window.innerWidth;
+    let positionsInitialized = false; // Ensures positioning only runs once
 
     // Scroll indicators
     const observer = new IntersectionObserver((entries) => {
@@ -27,18 +27,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.snap-section').forEach(s => observer.observe(s));
 
     // Positioning logic
-    function initPositions() {
+    function initPositions(force = false) {
+        // Skip if already positioned and width unchanged
+        if (positionsInitialized && !force) return;
+
         const winW = window.innerWidth;
         const winH = window.innerHeight;
         const isMobile = winW <= 768;
 
-        const safePad = isMobile ? 8 : 40;
-        const arrowBoxW = isMobile ? 70 : 120;
-        const arrowBoxH = isMobile ? 70 : 120;
+        const safePad = isMobile ? 10 : 40;
+        const arrowBox = isMobile ? 80 : 130;
 
         const forbiddenZones = [
-            { l: 0, t: winH - arrowBoxH, r: arrowBoxW, b: winH }, 
-            { l: winW - arrowBoxW, t: winH - arrowBoxH, r: winW, b: winH }
+            { l: 0, t: winH - arrowBox, r: arrowBox, b: winH }, 
+            { l: winW - arrowBox, t: winH - arrowBox, r: winW, b: winH }
         ];
 
         [containers.prog, containers.log].forEach(container => {
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const w = item.offsetWidth;
                 const h = item.offsetHeight;
 
-                let currentBuffer = isMobile ? 10 : 30;
+                let currentBuffer = isMobile ? 8 : 30;
 
                 do {
                     overlap = false;
@@ -60,47 +62,53 @@ document.addEventListener('DOMContentLoaded', () => {
                     y = Math.random() * (winH - h - (safePad * 2)) + safePad;
                     rect = { left: x, top: y, right: x + w, bottom: y + h };
 
+                    // Avoid arrow zones
                     for (let z of forbiddenZones) {
                         if (!(rect.right < z.l || rect.left > z.r || rect.bottom < z.t || rect.top > z.b)) {
                             overlap = true; break;
                         }
                     }
 
-                    // Only posters prevent overlapping
+                    // Posters don't overlap each other
                     if (!overlap && isProg) {
                         for (let r of placedRects) {
                             const collision = !(
-                                rect.right + currentBuffer < r.left ||
-                                rect.left > r.right + currentBuffer ||
-                                rect.bottom + currentBuffer < r.top ||
+                                rect.right + currentBuffer < r.left || 
+                                rect.left > r.right + currentBuffer || 
+                                rect.bottom + currentBuffer < r.top || 
                                 rect.top > r.bottom + currentBuffer
                             );
                             if (collision) { overlap = true; break; }
                         }
                     }
                     attempts++;
-                    if (attempts > 300 && currentBuffer > 2) currentBuffer -= 1;
-                } while (overlap && attempts < 1000);
+                    if (attempts > 400 && currentBuffer > 2) currentBuffer -= 1;
+                } while (overlap && attempts < 800);
 
                 item.style.left = x + 'px';
                 item.style.top = y + 'px';
                 item.style.opacity = '1';
                 placedRects.push(rect);
-                setupDrag(item);
+
+                // Only setup drag on first positioning
+                if (!positionsInitialized) setupDrag(item);
             });
         });
+
+        positionsInitialized = true;
     }
 
-    // Drag logic with threshold to avoid interfering with scroll
+    // Drag logic with threshold
     function setupDrag(item) {
         let isDragging = false;
         let startX, startY, initialL, initialT;
-        let dragThreshold = 10; 
+        let dragThreshold = 5; // Threshold to distinguish scroll from drag
 
         const onStart = (e) => {
             const evt = e.type.includes('touch') ? e.touches[0] : e;
             startX = evt.clientX; startY = evt.clientY;
-            initialL = parseFloat(item.style.left); initialT = parseFloat(item.style.top);
+            initialL = parseFloat(item.style.left);
+            initialT = parseFloat(item.style.top);
 
             document.addEventListener('mousemove', onMove);
             document.addEventListener('touchmove', onMove, { passive: false });
@@ -113,13 +121,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const deltaX = Math.abs(evt.clientX - startX);
             const deltaY = Math.abs(evt.clientY - startY);
 
+            // Start dragging only after threshold exceeded
             if (!isDragging && (deltaX > dragThreshold || deltaY > dragThreshold)) {
                 isDragging = true;
                 item.classList.add('dragging');
             }
 
             if (!isDragging) return;
-            if (e.type === 'touchmove') e.preventDefault();
+
+            // Prevent page scroll while dragging
+            if (e.cancelable) e.preventDefault();
 
             let nx = initialL + (evt.clientX - startX);
             let ny = initialT + (evt.clientY - startY);
@@ -181,18 +192,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         await Promise.all(promises);
-        // Small delay to ensure DOM is ready before calculating positions
-        setTimeout(initPositions, 100);
+        setTimeout(() => initPositions(), 200);
     }
 
     loadAll();
 
-    // Only reposition on width changes (screen rotation). Ignore height changes (mobile scroll).
+    // Prevent repositioning on mobile height changes (only on width changes like rotation)
     window.addEventListener('resize', () => {
-        if (window.innerWidth !== lastWidth) {
+        if (Math.abs(window.innerWidth - lastWidth) > 5) {
             lastWidth = window.innerWidth;
-            clearTimeout(window.resT);
-            window.resT = setTimeout(initPositions, 200);
+            positionsInitialized = false; // Allow repositioning only on rotation
+            initPositions(true);
         }
     });
 });
