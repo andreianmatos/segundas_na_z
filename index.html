@@ -1,72 +1,64 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="segundas na z - Arquivo e divulgação de eventos culturais">
     <title>segundas na z</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="images/logos/2as-removebg.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/logos/2as-removebg.png">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="homepage">
-    <!-- Header with navigation -->
-    <header class="header">
-        <nav class="nav">
-            <div class="nav-container">
-                <!-- Site logo/title -->
-                <a href="index.html" class="logo">segundas na z</a>
-                
-                <!-- Main navigation menu -->
-                <ul class="nav-menu">
-                    <li><a href="index.html" class="nav-link active">Sobre</a></li>
-                    <li><a href="schedule.html" class="nav-link">Programação</a></li>
-                    <li><a href="archive.html" class="nav-link">Arquivo</a></li>
-                </ul>
-                
-                <!-- Mobile hamburger menu button -->
-                <div class="nav-toggle">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
+<body>
+<!-- Scroll arrows - About page (both down) -->
+<div class="scroll-indicators sobre-indicators active">
+    <div class="scroll-arrow">↓</div>
+    <div class="scroll-arrow">↓</div>
+</div>
+<!-- Scroll arrows - Program page (one up, one down) -->
+<div class="scroll-indicators prog-indicators">
+    <div class="scroll-arrow up">↓</div>
+    <div class="scroll-arrow">↓</div>
+</div>
+<!-- Scroll arrows - Events page (both up) -->
+<div class="scroll-indicators eventos-indicators">
+    <div class="scroll-arrow up">↓</div>
+    <div class="scroll-arrow up">↓</div>
+</div>
+<div class="snap-wrapper">
+    
+    <!-- Section 1: About -->
+    <section id="sobre" class="snap-section">
+        <div class="frame-container frame-small tracejado">
+            <div class="hero-content">
+                <img src="images/logos/2as-removebg.png" class="main-logo" alt="Logo">
+                <div class="hero-text">
+                    <p><i>Experimentação, encontro e partilha.</i></p>
+                    <p>Segundas-feiras | 22h — 02h</p>
+                    <p>Terraço ZDB, Lisboa</p>
                 </div>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Main content area -->
-    <main class="main">
-        <section class="homepage-hero-section">
-            <div class="container">
-                <div class="hero-content">
-                    <img src="images/logos/2as-removebg.png" alt="segundas na z logo" class="simple-logo">
-                    <p>Experimentação, encontro e partilha.</p>
-                    <p>Todas as segundas-feiras das 22h às 02h</p>
-                    <p>No andar do terraço da galeria Zé dos Bois</p>
-                    <hr>
-                    <p><a href="mailto:segundasnaz@zedosbois.org">email</a></p>
-                    <p><a href="https://www.instagram.com/segundas_na_z/" target="_blank">instagram</a></p>
-                    <img src="images/logos/zdb-logo-removebg.png" alt="Zé dos Bois" class="zdb-logo">
+                <div class="hero-links">
+                    <a href="mailto:segundasnaz@zedosbois.org">email</a> /
+                    <a href="https://instagram.com/segundas_na_z" target="_blank">instagram</a>
                 </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer with links -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2025. segundas na z.</p>
-                <div class="footer-links">
-                    <a href="index.html">Sobre</a>
-                    <a href="schedule.html">Programação</a>
-                    <a href="archive.html">Arquivo</a>
-                </div>
+                <footer class="mini-footer">© 2026 segundas na z</footer>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <!-- JavaScript files -->
-    <script src="js/main.js"></script>
+    <!-- Section 2: Program -->
+    <section id="prog" class="snap-section">
+        <div class="random-display" id="posters-container">
+            <!-- Posters will be loaded dynamically -->
+        </div>
+    </section>
+
+    <!-- Section 3: Events -->
+    <section id="log" class="snap-section">
+        <div class="random-display" id="events-container">
+            <!-- Images will be loaded dynamically -->
+        </div>
+    </section>
+
+</div>
+
+<script src="js/script.js"></script>
 </body>
 </html>

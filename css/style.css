@@ -1,0 +1,75 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scrollbar-width: none; }
+::-webkit-scrollbar { display: none; }
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #fff;
+    height: 100vh;
+    overflow: hidden;
+}
+
+body::before {
+    content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: url("../images/fios-AM-bg.png") center/cover fixed;
+    filter: grayscale(100%); opacity: 0.3; z-index: -1;
+}
+
+.scroll-indicators {
+    position: fixed; bottom: 30px; left: 0; right: 0;
+    pointer-events: none; z-index: 1000;
+    display: flex; justify-content: space-between; padding: 0 30px;
+    opacity: 0; transition: opacity 0.5s ease;
+}
+.scroll-indicators.active { opacity: 1; }
+.scroll-arrow { font-size: 24px; font-weight: 900; animation: bounce 2s infinite; }
+.scroll-arrow.up { transform: rotate(180deg); --rotation: 180deg; }
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0) rotate(var(--rotation, 0deg)); opacity: 0.8; }
+    50% { transform: translateY(-5px) rotate(var(--rotation, 0deg)); opacity: 1; }
+}
+
+.snap-wrapper { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
+.snap-section { height: 100vh; scroll-snap-align: start; display: flex; align-items: center; justify-content: center; position: relative; }
+
+.frame-container { background: rgba(255, 255, 255, 0.95); border: 1px solid #000; border-radius: 4px; z-index: 10; padding: 50px; text-align: center; }
+.frame-small { width: 420px; height: 420px; display: flex; flex-direction: column; justify-content: center; }
+
+.random-display { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; }
+
+.poster-item, .event-item, .video-item {
+    position: absolute; cursor: grab; touch-action: none; user-select: none;
+    opacity: 0; transition: opacity 0.4s ease;
+}
+
+.poster-item img, .event-item img, .video-content {
+    border: 1px solid #000; background: #fff; display: block; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Tamanhos Desktop */
+.poster-item img { width: 140px; }
+.poster-item.monthly-poster img { width: 300px; }
+.event-item img { width: 260px; }
+.video-item { width: 300px; aspect-ratio: 16/9; }
+
+.video-content { width: 100%; height: 100%; position: relative; background: #000; overflow: hidden; }
+.video-content iframe { width: 150%; height: 150%; position: absolute; top: -25%; left: -25%; border: none; pointer-events: none; }
+.video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; background: transparent; }
+
+.dragging { cursor: grabbing !important; z-index: 1000 !important; transform: scale(1.03); transition: none; }
+
+.main-logo { width: 140px; margin-bottom: 25px; }
+.hero-links a { color: #000; text-decoration: none; font-size: 14px; }
+.mini-footer { margin-top: 40px; font-size: 11px; opacity: 0.6; }
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .frame-small { width: 85%; padding: 25px; }
+    .poster-item img { width: 110px; }
+    .poster-item.monthly-poster img { width: 180px; }
+    .event-item img { width: 160px; }
+    .video-item { width: 220px; }
+    .scroll-indicators { bottom: 20px; padding: 0 15px; }
+}
