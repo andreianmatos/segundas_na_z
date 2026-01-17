@@ -1,15 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     const posterFiles = ['monthly_poster.png', 'week1.png', 'week2.png', 'week3.png', 'week4.png'];
     const eventFiles = ['1.jpg', '2.JPG', '3.JPG', '4.jpg', '5.JPG', '6.JPG', '7.JPG', '8.JPG'];
-    const youtubeIDs = ['BRGZ-pxAiPw']; 
+    const youtubeIDs = ['BRGZ-pxAiPw'];
 
     const containers = {
         prog: document.getElementById('posters-container'),
         log: document.getElementById('events-container')
     };
 
-    // 1. SCROLL ARROWS
+    // Track width to avoid unnecessary repositioning on mobile height changes
+    let lastWidth = window.innerWidth;
+
+    // Scroll indicators
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -23,21 +26,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.5 });
     document.querySelectorAll('.snap-section').forEach(s => observer.observe(s));
 
-    // 2. POSITIONING LOGIC
+    // Positioning logic
     function initPositions() {
         const winW = window.innerWidth;
         const winH = window.innerHeight;
         const isMobile = winW <= 768;
 
-        // Margem mínima absoluta para não colar ao vidro, mas usar o ecrã todo
         const safePad = isMobile ? 8 : 40;
-        // Tamanho exato da zona das setas (apenas nos cantos inferiores)
         const arrowBoxW = isMobile ? 70 : 120;
         const arrowBoxH = isMobile ? 70 : 120;
 
         const forbiddenZones = [
-            { l: 0, t: winH - arrowBoxH, r: arrowBoxW, b: winH }, // Canto inferior esquerdo
-            { l: winW - arrowBoxW, t: winH - arrowBoxH, r: winW, b: winH } // Canto inferior direito
+            { l: 0, t: winH - arrowBoxH, r: arrowBoxW, b: winH }, 
+            { l: winW - arrowBoxW, t: winH - arrowBoxH, r: winW, b: winH }
         ];
 
         [containers.prog, containers.log].forEach(container => {
@@ -51,40 +52,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 const w = item.offsetWidth;
                 const h = item.offsetHeight;
 
-                // Buffer de espaço entre posters (reduz se não houver espaço no mobile)
                 let currentBuffer = isMobile ? 10 : 30;
 
                 do {
                     overlap = false;
-                    // X e Y aleatórios respeitando o safePad
                     x = Math.random() * (winW - w - (safePad * 2)) + safePad;
                     y = Math.random() * (winH - h - (safePad * 2)) + safePad;
                     rect = { left: x, top: y, right: x + w, bottom: y + h };
 
-                    // 1. Verificar colisão apenas com os CANTOS das setas
                     for (let z of forbiddenZones) {
                         if (!(rect.right < z.l || rect.left > z.r || rect.bottom < z.t || rect.top > z.b)) {
                             overlap = true; break;
                         }
                     }
 
-                    // 2. Programação: Impedir sobreposição entre si
+                    // Only posters prevent overlapping
                     if (!overlap && isProg) {
                         for (let r of placedRects) {
                             const collision = !(
-                                rect.right + currentBuffer < r.left || 
-                                rect.left > r.right + currentBuffer || 
-                                rect.bottom + currentBuffer < r.top || 
+                                rect.right + currentBuffer < r.left ||
+                                rect.left > r.right + currentBuffer ||
+                                rect.bottom + currentBuffer < r.top ||
                                 rect.top > r.bottom + currentBuffer
                             );
                             if (collision) { overlap = true; break; }
                         }
                     }
-
                     attempts++;
-                    // Se estiver difícil de posicionar, reduz o espaço entre posters gradualmente
                     if (attempts > 300 && currentBuffer > 2) currentBuffer -= 1;
-
                 } while (overlap && attempts < 1000);
 
                 item.style.left = x + 'px';
@@ -96,11 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. DRAG LOGIC
+    // Drag logic with threshold to avoid interfering with scroll
     function setupDrag(item) {
         let isDragging = false;
         let startX, startY, initialL, initialT;
-        let dragThreshold = 10; // Minimum pixels to move before starting drag
+        let dragThreshold = 10; 
 
         const onStart = (e) => {
             const evt = e.type.includes('touch') ? e.touches[0] : e;
@@ -118,21 +113,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const deltaX = Math.abs(evt.clientX - startX);
             const deltaY = Math.abs(evt.clientY - startY);
 
-            // Only start dragging if moved enough (prevents accidental drags during scroll)
             if (!isDragging && (deltaX > dragThreshold || deltaY > dragThreshold)) {
                 isDragging = true;
                 item.classList.add('dragging');
-                if (e.type === 'touchmove') e.preventDefault();
             }
 
             if (!isDragging) return;
-
             if (e.type === 'touchmove') e.preventDefault();
 
             let nx = initialL + (evt.clientX - startX);
             let ny = initialT + (evt.clientY - startY);
 
-            // Bounds: Apenas para não sair do ecrã visível
             const mx = window.innerWidth - item.offsetWidth;
             const my = window.innerHeight - item.offsetHeight;
             nx = Math.max(0, Math.min(nx, mx));
@@ -143,9 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const onEnd = () => {
-            if (isDragging) {
-                item.classList.remove('dragging');
-            }
+            if (isDragging) item.classList.remove('dragging');
             isDragging = false;
             document.removeEventListener('mousemove', onMove);
             document.removeEventListener('touchmove', onMove);
@@ -155,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         item.addEventListener('touchstart', onStart, { passive: false });
     }
 
-    // 4. LOAD CONTENT
+    // Load content
     async function loadAll() {
         const promises = [];
         posterFiles.forEach(f => {
@@ -192,33 +181,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         await Promise.all(promises);
-        setTimeout(initPositions, 500);
+        // Small delay to ensure DOM is ready before calculating positions
+        setTimeout(initPositions, 100);
     }
 
     loadAll();
+
+    // Only reposition on width changes (screen rotation). Ignore height changes (mobile scroll).
     window.addEventListener('resize', () => {
-        clearTimeout(window.resT);
-        window.resT = setTimeout(initPositions, 200);
+        if (window.innerWidth !== lastWidth) {
+            lastWidth = window.innerWidth;
+            clearTimeout(window.resT);
+            window.resT = setTimeout(initPositions, 200);
+        }
     });
-
-    // Prevent pull-to-refresh on mobile
-    let startY = 0;
-    document.addEventListener('touchstart', (e) => {
-        startY = e.touches[0].clientY;
-    }, { passive: false });
-
-    document.addEventListener('touchmove', (e) => {
-        const currentY = e.touches[0].clientY;
-        const diffY = startY - currentY;
-
-        // Prevent pull-to-refresh at top of page (pulling down)
-        if (window.scrollY === 0 && diffY < -50) {
-            e.preventDefault();
-        }
-
-        // Prevent pull-to-refresh at bottom of page (pulling up)
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && diffY > 50) {
-            e.preventDefault();
-        }
-    }, { passive: false });
 });
