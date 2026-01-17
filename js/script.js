@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    const posterFiles = ['monthly_poster.png', 'week1.png', 'week2.png', 'week3.png', 'week4.png'];
-    const eventFiles = ['1.jpg', '2.JPG', '3.JPG', '4.jpg', '5.JPG', '6.JPG', '7.JPG', '8.JPG'];
+    const posterFiles = ['monthly_poster.webp', 'week1.webp', 'week2.webp', 'week3.webp', 'week4.webp'];
+    const eventFiles = ['1.webp', '2.webp', '3.webp', '4.webp', '5.webp', '7.webp', '8.webp'];
     const youtubeIDs = ['BRGZ-pxAiPw']; 
 
     const containers = {
@@ -155,31 +155,48 @@ document.addEventListener('DOMContentLoaded', () => {
         item.addEventListener('touchstart', onStart, { passive: false });
     }
 
+    // Helper function to get best image format (WebP preferred, fallback to original)
+    function getBestImageSrc(basePath, filename) {
+        return new Promise((resolve) => {
+            const webpPath = basePath + filename;
+            const originalPath = basePath + filename.replace(/\.webp$/i, '.jpg').replace(/\.webp$/i, '.JPG').replace(/\.webp$/i, '.png');
+
+            // Try WebP first
+            const testImg = new Image();
+            testImg.onload = () => resolve(webpPath);
+            testImg.onerror = () => resolve(originalPath);
+            testImg.src = webpPath;
+
+            // Timeout fallback after 1 second
+            setTimeout(() => resolve(originalPath), 1000);
+        });
+    }
+
     // Load content
     async function loadAll() {
         const promises = [];
-        posterFiles.forEach(f => {
-            promises.push(new Promise(res => {
+        for (const f of posterFiles) {
+            promises.push(new Promise(async res => {
                 const div = document.createElement('div');
                 div.className = 'poster-item' + (f.includes('monthly') ? ' monthly-poster' : '');
                 const img = new Image();
                 img.onload = () => res();
-                img.src = `images/programming/${f}`;
+                img.src = await getBestImageSrc('images/programming/', f);
                 div.appendChild(img);
                 containers.prog.appendChild(div);
             }));
-        });
-        eventFiles.forEach(f => {
-            promises.push(new Promise(res => {
+        }
+        for (const f of eventFiles) {
+            promises.push(new Promise(async res => {
                 const div = document.createElement('div');
                 div.className = 'event-item';
                 const img = new Image();
                 img.onload = () => res();
-                img.src = `images/archive/${f}`;
+                img.src = await getBestImageSrc('images/archive/', f);
                 div.appendChild(img);
                 containers.log.appendChild(div);
             }));
-        });
+        }
         youtubeIDs.forEach(id => {
             const div = document.createElement('div');
             div.className = 'video-item';
