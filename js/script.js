@@ -1,7 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // jsDelivr CDN base URL for faster image loading
-    const CDN_BASE = 'https://cdn.jsdelivr.net/gh/andreianmatos/segundas_na_z@main/';
+    // wsrv.nl CDN base URL for faster image loading with automatic optimization
+    const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/andreianmatos/segundas_na_z/main/';
+    
+    // Helper function to get wsrv.nl URL
+    function getImageUrl(path) {
+        return `https://wsrv.nl/?url=${encodeURIComponent(GITHUB_RAW_BASE + path)}`;
+    }
     
     const posterFiles = ['monthly_poster.webp'];
     // const posterFiles = ['monthly_poster.webp', 'week1.webp', 'week2.webp', 'week3.webp', 'week4.webp']; // Weekly posters commented out
@@ -224,9 +229,9 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             img.onerror = () => {
                 // Fallback to PNG if WebP fails
-                img.src = `${CDN_BASE}images/programming/monthly_poster.png`;
+                img.src = getImageUrl(`images/programming/monthly_poster.png`);
             };
-            img.src = `${CDN_BASE}images/programming/${f}`;
+            img.src = getImageUrl(`images/programming/${f}`);
         });
     }
 
@@ -247,9 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
             img.onerror = () => {
                 // Fallback to JPG if WebP fails
                 const fallback = f.replace('.webp', '.jpg').replace('.webp', '.JPG');
-                img.src = `${CDN_BASE}images/archive/${fallback}`;
+                img.src = getImageUrl(`images/archive/${fallback}`);
             };
-            img.src = `${CDN_BASE}images/archive/${f}`;
+            img.src = getImageUrl(`images/archive/${f}`);
         });
 
         youtubeIDs.forEach(id => {
