@@ -1,253 +1,110 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; scrollbar-width: none; }
-::-webkit-scrollbar { display: none; }
 
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #fff;
+    background-color: #000; /* Fundo neutro para não distrair do conteúdo */
+    font-family: 'Helvetica', Arial, sans-serif;
+    overflow-x: hidden; /* Evitar bounces horizontais */
+}
+
+/* Permitir que o scroll flua naturalmente mas com snap no início de cada fase */
+.wall-container {
+    scroll-snap-type: y proximity; /* Proximity em vez de mandatory para permitir o scroll longo do poster */
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.moment {
+    width: 100vw;
+    position: relative;
+    scroll-snap-align: start;
+    display: block;
+}
+
+/* Momento 1: Ocupa o ecrã todo como uma pele */
+.hero-moment {
     height: 100vh;
     overflow: hidden;
 }
 
-body::before {
-    content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: url("https://wsrv.nl/?url=https://raw.githubusercontent.com/andreianmatos/segundas_na_z/main/images/fios-AM-bg.webp") center/cover fixed;
-    filter: grayscale(100%); opacity: 0.3; z-index: -1;
-}
-
-.scroll-indicators {
-    position: fixed; bottom: 30px; left: 0; right: 0;
-    pointer-events: none; z-index: 1000;
-    display: flex; justify-content: space-between; padding: 0 30px;
-    opacity: 0; transition: opacity 0.5s ease;
-}
-.scroll-indicators.active { opacity: 1; }
-.scroll-arrow { font-size: 24px; font-weight: 900; animation: bounce 2s infinite; }
-.scroll-arrow.up { transform: rotate(180deg); --rotation: 180deg; }
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0) rotate(var(--rotation, 0deg)); opacity: 0.8; }
-    50% { transform: translateY(-5px) rotate(var(--rotation, 0deg)); opacity: 1; }
-}
-
-.snap-wrapper { 
-    height: 100vh; 
-    overflow-y: scroll; 
-    scroll-snap-type: y mandatory;
-    touch-action: pan-y; /* Allow vertical scrolling on mobile/Mac */
-}
-.snap-section { height: 100vh; scroll-snap-align: start; display: flex; align-items: center; justify-content: center; position: relative; }
-#sobre { 
-    align-items: center; 
-    justify-content: center; 
-    padding: 80px 100px;
-    overflow: hidden;
-    max-height: 100vh;
-    box-sizing: border-box;
-}
-
-.frame-container {
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid #000;
-    border-radius: 6px;
-    z-index: 10;
-    padding: 40px;
-    text-align: center;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.05);
-}
-
-.frame-small {
-    width: 90%;
-    max-width: 900px;
-    min-height: 60vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 50px;
-    position: relative;
-    padding: 80px 100px;
-}
-
-.random-display { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; }
-
-.poster-item, .event-item, .video-item {
-    position: absolute; cursor: grab; touch-action: none; user-select: none;
-    opacity: 0; transition: opacity 0.4s ease;
-    -webkit-user-select: none; /* Safari/Chrome */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE/Edge */
-}
-
-/* Optimize for smooth dragging */
-.poster-item.dragging, .event-item.dragging, .video-item.dragging {
-    will-change: left, top;
-}
-
-
-.poster-item.monthly-poster {
-    cursor: default;
-    pointer-events: auto;
-    touch-action: auto;
-    opacity: 1 !important; /* Show immediately when added to DOM */
-}
-
-.poster-item img, .event-item img, .video-content {
-    border: 1px solid #000; background: #fff; display: block;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border-radius: 4px;
-}
-
-/* Responsive Image Sizes */
-.poster-item img { 
-    width: 12vw; 
-    min-width: 100px; 
-    max-width: 180px; 
-    height: auto;
-}
-.poster-item.monthly-poster img { 
-    height: 85vh; 
-    width: auto;
-    max-width: 90vw;
-}
-.event-item img { 
-    width: 25vw; 
-    min-width: 150px; 
-    max-width: 350px;
-    height: auto;
-}
-.video-item { 
-    width: 30vw; 
-    min-width: 200px; 
-    max-width: 400px; 
-    aspect-ratio: 16/9; 
-}
-
-.video-content { width: 100%; height: 100%; position: relative; background: #000; overflow: hidden; }
-.video-content iframe { width: 150%; height: 150%; position: absolute; top: -25%; left: -25%; border: none; pointer-events: none; }
-.video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; background: transparent; }
-
-.dragging { 
-    cursor: grabbing !important; 
-    z-index: 1000 !important; 
-    will-change: transform; /* Optimize for smooth dragging */
-    transition: none !important; /* No transitions during drag */
-}
-
-/* Hero Content Styling - Fullscreen Text */
-.hero-text-fullscreen {
+.full-screen-img {
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
-    padding: 0 20px;
-    box-sizing: border-box;
-}
-
-.text-wrapper {
-    position: relative;
-    height: 100%;
-    overflow: visible;
-}
-
-.text-large-flow {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 32px;
-    font-weight: 400;
-    line-height: 1.6;
-    margin: 0;
-    color: #000;
-    text-align: left;
-    hyphens: auto;
-    word-wrap: break-word;
-}
-
-.text-large-flow:last-child {
-    margin-bottom: 0;
-}
-
-.text-large-flow strong {
-    font-weight: 700;
-}
-
-.text-large-flow i {
-    font-style: italic;
-}
-
-.text-large-flow a {
-    color: #000;
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 4px;
-    transition: opacity 0.2s ease;
-    font-style: italic;
-}
-
-.text-large-flow a:hover {
-    opacity: 0.6;
-}
-
-.floating-logo {
-    width: 250px;
-    height: auto;
-    float: left;
-    shape-outside: url(https://wsrv.nl/?url=https://raw.githubusercontent.com/andreianmatos/segundas_na_z/main/images/logos/2as-removebg.png);
-    shape-image-threshold: 0.05;
-    shape-margin: 18px;
-    margin: 0 18px 8px 0;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-    opacity: 0.9;
+    object-fit: cover; /* Faz a imagem cobrir tudo sem deformar */
     display: block;
 }
 
+/* Momento 2: Poster Gigante */
+.poster-moment {
+    background: #fff;
+}
 
+.giant-poster {
+    width: 100vw; /* Ocupa a largura toda */
+    height: auto; /* A altura será proporcional, criando o scroll intenso */
+    display: block;
+}
 
-/* Mobile Optimizations */
+/* Momento 3: Info Final */
+.info-moment {
+    height: 100vh;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-cluster {
+    text-align: center;
+}
+
+.icon-sticker {
+    width: 220px;
+    height: 220px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 40px;
+    /* Um brilho muito leve para parecer um autocolante real */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+}
+
+.icon-sticker img {
+    width: 70%;
+}
+
+.raw-text {
+    font-size: 24px;
+    color: #000;
+    letter-spacing: -0.5px;
+}
+
+.raw-text p {
+    margin-bottom: 20px;
+}
+
+.links a {
+    color: #000;
+    text-decoration: none;
+    margin: 0 15px;
+    border-bottom: 2px solid #000;
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* Esconder scrollbar */
+.wall-container::-webkit-scrollbar {
+    display: none;
+}
+.wall-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Mobile Adjustments */
 @media (max-width: 768px) {
-    #sobre { 
-        padding: 50px 20px;
-    }
-
-    .hero-text-fullscreen {
-        padding: 0 10px;
-    }
-
-    .text-large-flow {
-        font-size: 18px;
-        line-height: 1.5;
-        margin: 0;
-    }
-
-    .floating-logo {
-        width: 180px;
-        shape-margin: 12px;
-        margin: 0 12px 8px 0;
-        shape-image-threshold: 0.05;
-    }
-
-    .poster-item img { 
-        width: 20vw; 
-        min-width: 80px; 
-        max-width: 140px; 
-    }
-    .poster-item.monthly-poster img { 
-        height: 85vh; 
-        width: auto;
-        max-width: 90vw;
-    }
-    .event-item img { 
-        width: 40vw; 
-        min-width: 120px; 
-        max-width: 250px; 
-    }
-    .video-item { 
-        width: 50vw; 
-        min-width: 180px; 
-        max-width: 300px; 
-    }
-    .scroll-indicators { bottom: 20px; padding: 0 15px; }
+    .icon-sticker { width: 160px; height: 160px; }
+    .raw-text { font-size: 18px; }
+    .links a { margin: 0 8px; }
 }

@@ -7,49 +7,36 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<!-- Scroll arrows - About page (both down) -->
-<div class="scroll-indicators sobre-indicators active">
-    <div class="scroll-arrow">↓</div>
-    <div class="scroll-arrow">↓</div>
-</div>
-<!-- Scroll arrows - Program page (one up, one down) -->
-<div class="scroll-indicators prog-indicators">
-    <div class="scroll-arrow up">↓</div>
-    <div class="scroll-arrow">↓</div>
-</div>
-<!-- Scroll arrows - Events page (both up) -->
-<div class="scroll-indicators eventos-indicators">
-    <div class="scroll-arrow up">↓</div>
-    <div class="scroll-arrow up">↓</div>
-</div>
-<div class="snap-wrapper">
+
+<div class="wall-container">
     
-    <!-- Section 1: About -->
-    <section id="sobre" class="snap-section">
-        <div class="hero-text-fullscreen">
-            <div class="text-wrapper">
-                <img src="https://wsrv.nl/?url=https://raw.githubusercontent.com/andreianmatos/segundas_na_z/main/images/logos/2as-removebg.png" class="floating-logo" alt="Logo">
-                <p class="text-large-flow"><strong>segundas na z</strong> <i>experimentação, encontro e partilha</i>. Segundas-feiras, das 22h às 02h, no Terraço da ZDB, Lisboa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.<a href="mailto:segundasnaz@email.com">email</a> <a href="https://instagram.com/segundas_na_z" target="_blank">instagram</a>.</p>
+    <!-- MOMENTO 1: Imagem de arquivo (Escolhi a 4.webp que é impactante) -->
+    <section class="moment hero-moment">
+        <img src="https://wsrv.nl/?url=https://raw.githubusercontent.com/andreianmatos/segundas_na_z/main/images/archive/1.JPG" alt="Archive Raw" class="full-screen-img">
+    </section>
+
+    <!-- MOMENTO 2: O Poster Gigante (Width Full = Long Scroll) -->
+    <section class="moment poster-moment">
+        <img src="https://wsrv.nl/?url=https://raw.githubusercontent.com/andreianmatos/segundas_na_z/main/images/programming/monthly_poster.png" alt="Poster Gigante" class="giant-poster">
+    </section>
+
+    <!-- MOMENTO 3: O Desfecho (Bola e Texto) -->
+    <section class="moment info-moment">
+        <div class="info-cluster">
+            <div class="icon-sticker">
+                <img src="https://wsrv.nl/?url=https://raw.githubusercontent.com/andreianmatos/segundas_na_z/main/images/logos/2as-removebg.png" alt="Logo">
+            </div>
+            <div class="raw-text">
+                <p><i>experimentação, encontro e partilha</i></p>
+                <div class="links">
+                    <a href="mailto:segundasnaz@email.com">email</a>
+                    <a href="https://instagram.com/segundas_na_z" target="_blank">instagram</a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Section 2: Program -->
-    <section id="prog" class="snap-section">
-        <div class="random-display" id="posters-container">
-            <!-- Posters will be loaded dynamically -->
-        </div>
-    </section>
-
-    <!-- Section 3: Events -->
-    <section id="log" class="snap-section">
-        <div class="random-display" id="events-container">
-            <!-- Images will be loaded dynamically -->
-        </div>
-    </section>
-
 </div>
 
-<script src="js/script.js"></script>
 </body>
 </html>
