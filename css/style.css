@@ -1,50 +1,50 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    background-color: #000; /* Fundo neutro para não distrair do conteúdo */
-    font-family: 'Helvetica', Arial, sans-serif;
-    overflow-x: hidden; /* Evitar bounces horizontais */
+    background-color: #000;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
-/* Permitir que o scroll flua naturalmente mas com snap no início de cada fase */
+/* Desktop: normal scroll */
 .wall-container {
-    scroll-snap-type: y proximity; /* Proximity em vez de mandatory para permitir o scroll longo do poster */
-    height: 100vh;
-    overflow-y: scroll;
+    width: 100%;
+    /* No height limit so it scrolls naturally */
 }
 
 .moment {
     width: 100vw;
     position: relative;
-    scroll-snap-align: start;
     display: block;
 }
 
-/* Momento 1: Ocupa o ecrã todo como uma pele */
+/* Momento 1: Full Screen */
 .hero-moment {
     height: 100vh;
-    overflow: hidden;
 }
 
 .full-screen-img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Faz a imagem cobrir tudo sem deformar */
+    object-fit: cover;
     display: block;
 }
 
-/* Momento 2: Poster Gigante */
+/* Moment 2: poster section */
 .poster-moment {
     background: #fff;
 }
 
 .giant-poster {
-    width: 100vw; /* Ocupa a largura toda */
-    height: auto; /* A altura será proporcional, criando o scroll intenso */
+    width: 100vw;
+    height: auto;
     display: block;
 }
 
-/* Momento 3: Info Final */
+/* Moment 3: final info section */
 .info-moment {
     height: 100vh;
     background: #fff;
@@ -53,58 +53,178 @@ body {
     justify-content: center;
 }
 
-.info-cluster {
-    text-align: center;
-}
-
 .icon-sticker {
     width: 220px;
-    height: 220px;
-    background: #fff;
-    border-radius: 50%;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 40px;
-    /* Um brilho muito leve para parecer um autocolante real */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+    margin: 0 auto 60px;
 }
 
-.icon-sticker img {
-    width: 70%;
+.icon-sticker img { 
+    width: 180px; 
+    height: auto;
 }
-
-.raw-text {
-    font-size: 24px;
-    color: #000;
-    letter-spacing: -0.5px;
+.raw-text { 
+    font-size: 20px; 
+    color: #000; 
+    text-align: center;
+    line-height: 1.7;
+    letter-spacing: 0.2px;
+    max-width: 600px;
+    margin: 0 auto;
 }
-
-.raw-text p {
-    margin-bottom: 20px;
+.raw-text h1 { 
+    font-size: 38px; 
+    font-weight: 700; 
+    margin-bottom: 30px;
+    letter-spacing: -0.6px;
+    line-height: 1.1;
 }
-
-.links a {
-    color: #000;
-    text-decoration: none;
-    margin: 0 15px;
-    border-bottom: 2px solid #000;
-    font-weight: bold;
+.raw-text p { 
+    margin-bottom: 16px;
+    line-height: 1.6;
+    font-weight: 300;
+}
+.raw-text p i {
     font-style: italic;
+    font-weight: 400;
+    font-size: 22px;
+    margin-bottom: 24px;
+    display: block;
+}
+.raw-text p.small-text {
+    font-size: 14px;
+    font-weight: 300;
+    opacity: 0.8;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+.raw-text p.small-text:last-of-type {
+    margin-bottom: 32px;
+}
+.links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    margin-top: 32px;
+}
+.links a {
+    color: #000; 
+    text-decoration: none; 
+    border-bottom: 1px solid #000; 
+    font-weight: 400; 
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+.links a:hover {
+    opacity: 0.5;
 }
 
-/* Esconder scrollbar */
-.wall-container::-webkit-scrollbar {
-    display: none;
-}
-.wall-container {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+
+/* Archive section */
+.archive-moment {
+    background: #f5f5f5;
+    min-height: auto;
+    padding: 80px 0;
 }
 
-/* Mobile Adjustments */
+.archive-wall {
+    width: 100%;
+    padding: 0 60px;
+}
+
+.archive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 200px; /* Prevent layout shift while loading */
+}
+
+.archive-grid img {
+    width: 100%;
+    height: auto;
+    display: block;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Mobile: smooth scroll */
 @media (max-width: 768px) {
-    .icon-sticker { width: 160px; height: 160px; }
-    .raw-text { font-size: 18px; }
-    .links a { margin: 0 8px; }
+    /* Normal scroll, no snapping for better mobile experience */
+    .wall-container {
+        width: 100%;
+        /* Let it scroll naturally */
+    }
+    
+    body {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Remove snap behavior on mobile */
+    .moment {
+        scroll-snap-align: none;
+    }
+
+    /* Smaller sizes for mobile */
+    .icon-sticker { 
+        width: 140px; 
+        margin-bottom: 45px;
+    }
+    .icon-sticker img { width: 120px; }
+    .raw-text { 
+        font-size: 16px; 
+        line-height: 1.6;
+        letter-spacing: 0.15px;
+        padding: 0 20px;
+    }
+    .raw-text h1 { 
+        font-size: 28px; 
+        margin-bottom: 24px;
+        letter-spacing: -0.4px;
+    }
+    .raw-text p { 
+        margin-bottom: 14px;
+    }
+    .raw-text p i {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    .raw-text p.small-text {
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+    .raw-text p.small-text:last-of-type {
+        margin-bottom: 28px;
+    }
+    .links {
+        margin-top: 28px;
+    }
+    .links { flex-direction: column; gap: 18px; }
+    .links a { 
+        margin: 0; 
+        font-size: 13px;
+    }
+    
+    /* Archive mobile */
+    .archive-moment { padding: 50px 0; }
+    .archive-wall { padding: 0 20px; }
+    .archive-grid { 
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 20px; 
+    }
 }
