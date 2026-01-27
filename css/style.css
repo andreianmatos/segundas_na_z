@@ -129,22 +129,22 @@ body {
 
 /* Archive section */
 .archive-moment {
-    background: #f5f5f5;
+    background: #fff;
     min-height: auto;
-    padding: 80px 0;
+    padding: 0;
 }
 
 .archive-wall {
     width: 100%;
-    padding: 0 60px;
+    padding: 0;
 }
 
 .archive-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 30px;
-    max-width: 1400px;
-    margin: 0 auto;
+    gap: 0;
+    width: 100%;
+    margin: 0;
     min-height: 200px; /* Prevent layout shift while loading */
 }
 
@@ -154,6 +154,7 @@ body {
     display: block;
     opacity: 0;
     animation: fadeIn 0.3s ease forwards;
+    border: none;
 }
 
 @keyframes fadeIn {
@@ -221,10 +222,10 @@ body {
     }
     
     /* Archive mobile */
-    .archive-moment { padding: 50px 0; }
-    .archive-wall { padding: 0 20px; }
+    .archive-moment { padding: 0; }
+    .archive-wall { padding: 0; }
     .archive-grid { 
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 20px; 
+        gap: 0; 
     }
 }
